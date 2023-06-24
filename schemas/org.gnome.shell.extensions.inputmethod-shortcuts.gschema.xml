@@ -2,11 +2,11 @@
 <schemalist>
     <schema id="org.gnome.shell.extensions.inputmethod-shortcuts" path="/org/gnome/shell/extensions/inputmethod-shortcuts/">
         <key type="as" name="switch-to-im-0">
-            <default><![CDATA[['<Super>j']]]></default>
+            <default>['&lt;Super&gt;j']</default>
             <summary>Switch to input method 0</summary>
         </key>
         <key type="as" name="switch-to-im-1">
-            <default><![CDATA[['<Super>k']]]></default>
+            <default>['&lt;Super&gt;k']</default>
             <summary>Switch to input method 1</summary>
         </key>
     </schema>
