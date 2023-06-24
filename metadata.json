@@ -1,0 +1,8 @@
+{
+  "shell-version": [ "40", "41", "42", "43", "44", "45", "46", "47", "48", "49" ],
+  "uuid": "inputmethod-shortcuts@osamu.debian.org",
+  "name": "Shortcuts to activate input methods",
+  "description": "This creates shortcuts to activate input methods. Super-Enter = IM_0, Super-Shift-Enter = IM_1, Super-Alt-Enter = IM_2, Super-Ctrl-Enter = IM_3",
+  "url": "https://github.com/osamuaoki/inputmethod-shortcuts",
+  "settings-schema": "org.gnome.shell.extensions.inputmethod-shortcuts"
+}
