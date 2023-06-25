@@ -39,10 +39,10 @@ const Convenience = Me.imports.convenience;
 let settings;
 
 function init() {
-    settings = Convenience.getSettings();
 }
 
 function enable() {
+    settings = Convenience.getSettings();
     // Switch to the input method 0
     Main.wm.addKeybinding("switch-to-im-0",
         settings,
