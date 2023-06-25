@@ -117,7 +117,7 @@ function enable() {
     // Frippery Bottom Panel.
     Main.wm.addKeybinding("switch-to-im-0",
         settings,
-        Meta.KeyBindingFlags.NONE,
+        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
             switchWindow(true);
@@ -125,7 +125,7 @@ function enable() {
     );
     Main.wm.addKeybinding("switch-to-im-1",
         settings,
-        Meta.KeyBindingFlags.NONE,
+        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
             switchWindow(false);
