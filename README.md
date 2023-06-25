@@ -1,11 +1,74 @@
 Keyboard shortcuts for switching input methods under GNOME shell
 ================================================================
 
-This code is based on a GNOME shell extension:
-- https://github.com/matthijskooijman/gnome-shell-more-keyboard-shortcuts
+This is a simple GNOME shell extension that adds some extra keyboard shortcuts
+to switch input methods under GNOME shell.
 
-Currently, I just renamed variables only and this doesn't switch input methods
-yet.  (This now switches the window focus with '<Super>j' and '<Super>k'.)
+The latest version is available at:
+
+  https://github.com/osamuaoki/inputmethod-shortcuts
+
+You can install this extension by:
+
+```sh
+$ git clone https://github.com/osamuaoki/inputmethod-shortcuts
+$ cd inputmethod-shortcuts
+$ make install
+```
+
+This will install files into your `
+~/.local/share/gnome-shell/extensions/inputmethod-shortcuts@osamu.debian.org`
+directory.
+
+Afterwards, restart the GNOME shell by log-out and log-in from GUI.  You can
+also use CLI `killall gnome-shell` to log out.  This is essential process to
+get GNOME shell extension to function as expected.
+
+Then, enable this extension from, e.g., `gnome-extensions-app` (**Extensions**)
+in GNOME 43; or from **GNOME tweak** menu in older GNOME.
+
+(I only tested this for GNOME 43 but this extension should work for older
+version if `metadata.json` is adjusted.)
+
+Alternatively, you may download `inputmethod-shortcuts@osamu.debian.org.zip`
+from this github repo and use `gnome-tweak-tool` to install it.
+
+At this moment, configuring of shortcut key assignments requires you to rewrite
+`schema/org.gnome.shell.extensions.inputmethod-shortcuts.gschema.xml` file and
+re-building the source tree.  (Patch welcomed)
+
+Currently, I have US keyboard and assigned keys as:
+
+- `<Super>Return` activates "Input Method 0"
+- `<Super>u` activates "Input Method 0" (**u** for US)
+- `<Super><Shift>Return` activates "Input Method 1"
+- `<Super>j` activates "Input Method 1" (**j** for JP)
+- `<Super><Control>Return` activates "Input Method 2"
+- `<Super>i` activates "Input Method 2" (**i** for International)
+- `<Super><Alt>Return` activates "Input Method 3"
+- `<Super>k` activates "Input Method 3" (**k** for Kanji)
+
+You can check and set input methods from GUI `Settings` -> `Keyboard`.  Reordering is tedious via GUI.
+
+You can also check input method settings from CLI and reorder them easily as:
+
+```sh
+$ gsettings get org.gnome.desktop.input-sources sources
+[('xkb', 'us'), ('ibus', 'anthy'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl')]
+$ gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl'), ('ibus', 'anthy')]"
+$ gsettings get org.gnome.desktop.input-sources sources
+[('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl'), ('ibus', 'anthy')]
+```
+
+Now, Input Methods are reordered in good order for me:
+
+- "Input Method 0" = `('xkb', 'us')` -- standard US keyboard
+- "Input Method 1" = `('ibus', 'mozc-jp')` -- ibus with MOZC (Japanese)
+- "Input Method 2" = `('xkb', 'us+altgr-intl')` -- standard US keyboard with right-Alt for international inputs
+- "Input Method 3" = `('ibus', 'anthy')` -- ibus with Anthy (Japanese)
+
+This code is based on a similar GNOME shell extension:
+ - https://github.com/matthijskooijman/gnome-shell-more-keyboard-shortcuts
 
 License
 =======
