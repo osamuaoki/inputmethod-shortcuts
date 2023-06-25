@@ -34,7 +34,6 @@ const Shell = imports.gi.Shell;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
 
 let settings;
 
@@ -42,7 +41,7 @@ function init() {
 }
 
 function enable() {
-    settings = Convenience.getSettings();
+    settings = ExtensionUtils.getSettings();
     // Switch to the input method 0
     Main.wm.addKeybinding("switch-to-im-0",
         settings,

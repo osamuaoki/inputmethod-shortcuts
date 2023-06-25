@@ -2,7 +2,6 @@ UUID              = inputmethod-shortcuts@osamu.debian.org
 EXTENSIONS_PATH   = ~/.local/share/gnome-shell/extensions
 INSTALL_PATH      = $(EXTENSIONS_PATH)/$(UUID)
 FILES             = README.md \
-		    convenience.js \
 		    extension.js \
 		    metadata.json \
 		    schemas/
