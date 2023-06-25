@@ -5,7 +5,6 @@ FILES             = README.md \
 		    convenience.js \
 		    extension.js \
 		    metadata.json \
-		    stylesheet.css \
 		    schemas/
 
 .PHONY: all build install
