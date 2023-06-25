@@ -81,4 +81,8 @@ function enable() {
 }
 
 function disable() {
+    Main.wm.removeKeybinding("switch-to-im-0");
+    Main.wm.removeKeybinding("switch-to-im-1");
+    Main.wm.removeKeybinding("switch-to-im-2");
+    Main.wm.removeKeybinding("switch-to-im-3");
 }
