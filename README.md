@@ -70,6 +70,10 @@ Now, Input Methods are reordered in good order for me:
 This code is based on a similar GNOME shell extension:
  - https://github.com/matthijskooijman/gnome-shell-more-keyboard-shortcuts
 
+See [Keyboard shortcut customization (Input Method)](https://osamuaoki.github.io/en/2023/02/25/debian-usability-2023/#keyboard-shortcut-customization-input-method)
+and [GNOME shell extension for input methods](https://osamuaoki.github.io/en/2023/06/19/gnome-im-1/)
+for how I came to this extension.
+
 License
 =======
 This extension and all accompanying files are licensed under the MIT license.
