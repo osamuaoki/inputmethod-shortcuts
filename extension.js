@@ -43,10 +43,7 @@ function init() {
 }
 
 function enable() {
-    // Switch to the next/previous window within this workspace. Window
-    // ordering is fixed (not based on most recent use like the alt-tab
-    // switcher) so it can match a window list shown by e.g. the
-    // Frippery Bottom Panel.
+    // Switch to the input method 0
     Main.wm.addKeybinding("switch-to-im-0",
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
@@ -55,6 +52,7 @@ function enable() {
             imports.ui.status.keyboard.getInputSourceManager().inputSources[0].activate();
         }
     );
+    // Switch to the input method 1
     Main.wm.addKeybinding("switch-to-im-1",
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
@@ -63,6 +61,7 @@ function enable() {
             imports.ui.status.keyboard.getInputSourceManager().inputSources[1].activate();
         }
     );
+    // Switch to the input method 2
     Main.wm.addKeybinding("switch-to-im-2",
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
@@ -71,6 +70,7 @@ function enable() {
             imports.ui.status.keyboard.getInputSourceManager().inputSources[2].activate();
         }
     );
+    // Switch to the input method 3
     Main.wm.addKeybinding("switch-to-im-3",
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
