@@ -9,5 +9,13 @@
             <default>['&lt;Super&gt;k']</default>
             <summary>Switch to input method 1</summary>
         </key>
+        <key type="as" name="switch-to-im-2">
+            <default>['&lt;Super&gt;u']</default>
+            <summary>Switch to input method 2</summary>
+        </key>
+        <key type="as" name="switch-to-im-3">
+            <default>['&lt;Super&gt;i']</default>
+            <summary>Switch to input method 3</summary>
+        </key>
     </schema>
 </schemalist>

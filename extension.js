@@ -131,6 +131,22 @@ function enable() {
             switchWindow(false);
         }
     );
+    Main.wm.addKeybinding("switch-to-im-2",
+        settings,
+        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+        Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
+        function(display, screen, window, binding) {
+            switchWindow(true);
+        }
+    );
+    Main.wm.addKeybinding("switch-to-im-3",
+        settings,
+        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+        Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
+        function(display, screen, window, binding) {
+            switchWindow(false);
+        }
+    );
 }
 
 function disable() {
