@@ -2,19 +2,19 @@
 <schemalist>
     <schema id="org.gnome.shell.extensions.inputmethod-shortcuts" path="/org/gnome/shell/extensions/inputmethod-shortcuts/">
         <key type="as" name="switch-to-im-0">
-            <default>['&lt;Super&gt;j']</default>
+            <default>['&lt;Super&gt;u', '&lt;Super&gt;Return']</default>
             <summary>Switch to input method 0</summary>
         </key>
         <key type="as" name="switch-to-im-1">
-            <default>['&lt;Super&gt;k']</default>
+            <default>['&lt;Super&gt;j', '&lt;Super&gt;&lt;Shift&gt;Return']</default>
             <summary>Switch to input method 1</summary>
         </key>
         <key type="as" name="switch-to-im-2">
-            <default>['&lt;Super&gt;u']</default>
+            <default>['&lt;Super&gt;i', '&lt;Super&gt;&lt;Control&gt;Return']</default>
             <summary>Switch to input method 2</summary>
         </key>
         <key type="as" name="switch-to-im-3">
-            <default>['&lt;Super&gt;i']</default>
+            <default>['&lt;Super&gt;k', '&lt;Super&gt;&lt;Alt&gt;Return']</default>
             <summary>Switch to input method 3</summary>
         </key>
     </schema>

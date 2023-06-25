@@ -120,7 +120,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            switchWindow(true);
+            imports.ui.status.keyboard.getInputSourceManager().inputSources[0].activate();
         }
     );
     Main.wm.addKeybinding("switch-to-im-1",
@@ -128,7 +128,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            switchWindow(false);
+            imports.ui.status.keyboard.getInputSourceManager().inputSources[1].activate();
         }
     );
     Main.wm.addKeybinding("switch-to-im-2",
@@ -136,7 +136,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            switchWindow(true);
+            imports.ui.status.keyboard.getInputSourceManager().inputSources[2].activate();
         }
     );
     Main.wm.addKeybinding("switch-to-im-3",
@@ -144,7 +144,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            switchWindow(false);
+            imports.ui.status.keyboard.getInputSourceManager().inputSources[3].activate();
         }
     );
 }
