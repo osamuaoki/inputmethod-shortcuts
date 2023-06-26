@@ -34,6 +34,7 @@ const Shell = imports.gi.Shell;
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
+const InputSourceManager = imports.ui.status.keyboard.getInputSourceManager()
 
 let settings;
 
@@ -48,7 +49,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            imports.ui.status.keyboard.getInputSourceManager().inputSources[0].activate();
+            InputSourceManager.inputSources[0].activate();
         }
     );
     // Switch to the input method 1
@@ -57,7 +58,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            imports.ui.status.keyboard.getInputSourceManager().inputSources[1].activate();
+            InputSourceManager.inputSources[1].activate();
         }
     );
     // Switch to the input method 2
@@ -66,7 +67,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            imports.ui.status.keyboard.getInputSourceManager().inputSources[2].activate();
+            InputSourceManager.inputSources[2].activate();
         }
     );
     // Switch to the input method 3
@@ -75,7 +76,7 @@ function enable() {
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
         function(display, screen, window, binding) {
-            imports.ui.status.keyboard.getInputSourceManager().inputSources[3].activate();
+            InputSourceManager.inputSources[3].activate();
         }
     );
 }

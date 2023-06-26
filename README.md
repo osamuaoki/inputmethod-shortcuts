@@ -4,7 +4,7 @@ Keyboard shortcuts for switching input methods under GNOME shell
 This is a simple GNOME shell extension that adds some extra keyboard shortcuts
 to switch input methods under GNOME shell.
 
-The latest version is available at:
+The latest development version is available at:
 
   https://github.com/osamuaoki/inputmethod-shortcuts
 
@@ -31,7 +31,8 @@ in GNOME 43; or from **GNOME tweak** menu in older GNOME.
 version if `metadata.json` is adjusted.)
 
 Alternatively, you may download `inputmethod-shortcuts@osamu.debian.org.zip`
-from this github repo and use `gnome-tweak-tool` to install it.
+from this github repo or GNOME extension site and use `gnome-tweak-tool` or
+browser to install it.
 
 At this moment, configuring of shortcut key assignments requires you to rewrite
 `schema/org.gnome.shell.extensions.inputmethod-shortcuts.gschema.xml` file and
@@ -67,8 +68,14 @@ Now, Input Methods are reordered in good order for me:
 - "Input Method 2" = `('xkb', 'us+altgr-intl')` -- standard US keyboard with right-Alt for international inputs
 - "Input Method 3" = `('ibus', 'anthy')` -- ibus with Anthy (Japanese)
 
-This code is based on a similar GNOME shell extension:
+This code is based on similar GNOME shell extensions:
  - https://github.com/matthijskooijman/gnome-shell-more-keyboard-shortcuts
+ - https://gitlab.com/paddatrapper/shortcuts-gnome-extension (IGNORE_AUTOREPEAT)
+
+Resulting extension code was useful and functional for me but it had many rough
+edges since this was my first javascript program. Prior to getting this
+accepted by GNOME extension site, **JustPerfection** guided me to fix such
+rough edges by making me to rewrite practically the whole code.
 
 See [Keyboard shortcut customization (Input Method)](https://osamuaoki.github.io/en/2023/02/25/debian-usability-2023/#keyboard-shortcut-customization-input-method)
 and [GNOME shell extension for input methods](https://osamuaoki.github.io/en/2023/06/19/gnome-im-1/)
@@ -76,27 +83,21 @@ for how I came to this extension.
 
 License
 =======
-This extension and all accompanying files are licensed under the MIT license.
-
-Copyright (c) 2014 Matthijs Kooijman <matthijs@stdin.nl>
 Copyright (c) 2023 Osamu Aoki <osamu@debian.org>
 
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
 
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+[GPL2+](LICENSE)
+
