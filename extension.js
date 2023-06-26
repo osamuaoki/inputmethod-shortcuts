@@ -82,6 +82,7 @@ function enable() {
 }
 
 function disable() {
+    settings = null;
     Main.wm.removeKeybinding("switch-to-im-0");
     Main.wm.removeKeybinding("switch-to-im-1");
     Main.wm.removeKeybinding("switch-to-im-2");
