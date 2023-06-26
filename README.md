@@ -4,6 +4,10 @@ Keyboard shortcuts for switching input methods under GNOME shell
 This is a simple GNOME shell extension that adds some extra keyboard shortcuts
 to switch input methods under GNOME shell.
 
+This should be available from GNOME extensions site:
+
+- https://extensions.gnome.org/extension/6066/shortcuts-to-activate-input-methods/
+
 The latest development version is available at:
 
   https://github.com/osamuaoki/inputmethod-shortcuts
@@ -68,9 +72,11 @@ Now, Input Methods are reordered in good order for me:
 - "Input Method 2" = `('xkb', 'us+altgr-intl')` -- standard US keyboard with right-Alt for international inputs
 - "Input Method 3" = `('ibus', 'anthy')` -- ibus with Anthy (Japanese)
 
-This code is based on similar GNOME shell extensions:
+This code is based on similar GNOME shell extensions and previous method to
+switch input methods:
  - https://github.com/matthijskooijman/gnome-shell-more-keyboard-shortcuts
  - https://gitlab.com/paddatrapper/shortcuts-gnome-extension (IGNORE_AUTOREPEAT)
+ - https://www.mail-archive.com/gnome-shell-list@gnome.org/msg08988.html (previous method)
 
 Resulting extension code was useful and functional for me but it had many rough
 edges since this was my first javascript program. Prior to getting this
