@@ -48,7 +48,7 @@ function enable() {
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function(display, screen, window, binding) {
+        function() {
             InputSourceManager.inputSources[0].activate();
         }
     );
@@ -57,7 +57,7 @@ function enable() {
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function(display, screen, window, binding) {
+        function() {
             InputSourceManager.inputSources[1].activate();
         }
     );
@@ -66,7 +66,7 @@ function enable() {
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function(display, screen, window, binding) {
+        function() {
             InputSourceManager.inputSources[2].activate();
         }
     );
@@ -75,7 +75,7 @@ function enable() {
         settings,
         Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
         Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function(display, screen, window, binding) {
+        function() {
             InputSourceManager.inputSources[3].activate();
         }
     );
