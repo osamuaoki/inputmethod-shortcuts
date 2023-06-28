@@ -5,10 +5,11 @@ FILES             = README.md \
 		    LICENSE \
 		    extension.js \
 		    metadata.json \
+		    prefs.js \
 		    schemas/
 
 .PHONY: all build zip repo install clean
-all: zip
+all: build
 
 build:
 	glib-compile-schemas --strict --targetdir=schemas/ schemas

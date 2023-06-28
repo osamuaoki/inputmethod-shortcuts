@@ -34,7 +34,8 @@ const Keyboard = imports.ui.status.keyboard
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
-const MAX_NUMBER = 4;
+
+const MAX_SHORTCUTS = 10;
 
 class Extension {
 
@@ -43,10 +44,10 @@ class Extension {
     }
 
     enable () {
-        this.settings = ExtensionUtils.getSettings("org.gnome.shell.extensions.inputmethod-shortcuts");
+        this.settings = ExtensionUtils.getSettings();
         // Switch to the input method $i
-        for (let i = 0; i < MAX_NUMBER; i++) {
-            Main.wm.addKeybinding(`switch-to-im-${i}`,
+        for (let i = 0; i < MAX_SHORTCUTS; i++) {
+            Main.wm.addKeybinding(`imkey-${i}`,
                 this.settings,
                 Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
                 Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
@@ -56,8 +57,8 @@ class Extension {
     }
 
     disable() {
-        for (let i = 0; i < MAX_NUMBER; i++) {
-            Main.wm.removeKeybinding(`switch-to-im-${i}`);
+        for (let i = 0; i < MAX_SHORTCUTS; i++) {
+            Main.wm.removeKeybinding(`imkey-${i}`);
         };
         this.settings = null;
     }
