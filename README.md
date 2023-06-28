@@ -72,16 +72,17 @@ Now, Input Methods are reordered in good order for me:
 - "Input Method 2" = `('xkb', 'us+altgr-intl')` -- standard US keyboard with right-Alt for international inputs
 - "Input Method 3" = `('ibus', 'anthy')` -- ibus with Anthy (Japanese)
 
-This code is based on similar GNOME shell extensions and previous method to
-switch input methods:
+This code was started to be based on similar GNOME shell extensions and
+previous method to switch input methods:
  - https://github.com/matthijskooijman/gnome-shell-more-keyboard-shortcuts
  - https://gitlab.com/paddatrapper/shortcuts-gnome-extension (IGNORE_AUTOREPEAT)
  - https://www.mail-archive.com/gnome-shell-list@gnome.org/msg08988.html (previous method)
 
 Resulting extension code was useful and functional for me but it had many rough
-edges since this was my first javascript program. Prior to getting this
-accepted by GNOME extension site, **JustPerfection** guided me to fix such
-rough edges by making me to rewrite practically the whole code.
+edges since this was my first javascript program without even reading its
+references. Prior to getting this accepted by GNOME extension site,
+**JustPerfection** guided me to fix such rough edges by making me to rewrite
+practically the whole code.
 
 See [Keyboard shortcut customization (Input Method)](https://osamuaoki.github.io/en/2023/02/25/debian-usability-2023/#keyboard-shortcut-customization-input-method)
 and [GNOME shell extension for input methods](https://osamuaoki.github.io/en/2023/06/19/gnome-im-1/)

@@ -28,63 +28,42 @@
  * This is a simple gnome-shell extension that adds some extra keyboard
  * shortcuts for navigating through windows.
  */
-const Meta = imports.gi.Meta;
+const {Meta, Shell} = imports.gi;
 const Main = imports.ui.main;
-const Shell = imports.gi.Shell;
+const Keyboard = imports.ui.status.keyboard
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const Me = ExtensionUtils.getCurrentExtension();
-const InputSourceManager = imports.ui.status.keyboard.getInputSourceManager()
+const MAX_NUMBER = 4;
 
-let settings;
+class Extension {
+
+    constructor () {
+        this.settings = null;
+    }
+
+    enable () {
+        this.settings = ExtensionUtils.getSettings("org.gnome.shell.extensions.inputmethod-shortcuts");
+        // Switch to the input method $i
+        for (let i = 0; i < MAX_NUMBER; i++) {
+            Main.wm.addKeybinding(`switch-to-im-${i}`,
+                this.settings,
+                Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+                Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
+                () => Keyboard.getInputSourceManager().inputSources[i].activate()
+            );
+        };
+    }
+
+    disable() {
+        for (let i = 0; i < MAX_NUMBER; i++) {
+            Main.wm.removeKeybinding(`switch-to-im-${i}`);
+        };
+        this.settings = null;
+    }
+}
 
 function init() {
+    return new Extension();
 }
 
-function enable() {
-    settings = ExtensionUtils.getSettings();
-    // Switch to the input method 0
-    Main.wm.addKeybinding("switch-to-im-0",
-        settings,
-        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-        Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function() {
-            InputSourceManager.inputSources[0].activate();
-        }
-    );
-    // Switch to the input method 1
-    Main.wm.addKeybinding("switch-to-im-1",
-        settings,
-        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-        Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function() {
-            InputSourceManager.inputSources[1].activate();
-        }
-    );
-    // Switch to the input method 2
-    Main.wm.addKeybinding("switch-to-im-2",
-        settings,
-        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-        Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function() {
-            InputSourceManager.inputSources[2].activate();
-        }
-    );
-    // Switch to the input method 3
-    Main.wm.addKeybinding("switch-to-im-3",
-        settings,
-        Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-        Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
-        function() {
-            InputSourceManager.inputSources[3].activate();
-        }
-    );
-}
-
-function disable() {
-    settings = null;
-    Main.wm.removeKeybinding("switch-to-im-0");
-    Main.wm.removeKeybinding("switch-to-im-1");
-    Main.wm.removeKeybinding("switch-to-im-2");
-    Main.wm.removeKeybinding("switch-to-im-3");
-}
