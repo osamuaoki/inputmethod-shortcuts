@@ -1,8 +1,8 @@
 {
   "shell-version": [ "40", "41", "42", "43", "44" ],
   "uuid": "inputmethod-shortcuts@osamu.debian.org",
-  "name": "Input method shortcuts",
-  "description": "Quick keyboard switching among input methods",
-  "url": "https://github.com/osamuaoki/inputmethod-shortcuts",
+  "name": "Input method and touchpad shortcuts",
+  "description": "Quick switching of input method and touchpad",
+  "url": "https://github.com/osamuaoki/input-shortcuts",
   "settings-schema": "org.gnome.shell.extensions.inputmethod-shortcuts"
 }

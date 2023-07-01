@@ -41,5 +41,13 @@
             <default>['']</default>
             <summary>Shortcut to input method 9</summary>
         </key>
+        <key type="as" name="tpkey-0">
+            <default>['']</default>
+            <summary>Shortcut to touchpad on</summary>
+        </key>
+        <key type="as" name="tpkey-1">
+            <default>['']</default>
+            <summary>Shortcut to touchpad off</summary>
+        </key>
     </schema>
 </schemalist>

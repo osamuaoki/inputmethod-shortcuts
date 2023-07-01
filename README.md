@@ -1,12 +1,26 @@
-Quick keyboard switching among input methods
+Quick switching of input method and touchpad
 ============================================
 
-This is a GNOME shell extension that adds custom keyboard shortcuts
-to up to first 10 available input methods under GNOME shell.
+This is a GNOME shell extension which allows us to set up custom keyboard
+shortcuts for:
+- switching input method (first 10 available ones) and
+- switching touchpad.
+
+This can make keyboard input experiences quick (pop-up-less), non-interfering,
+stateless and deterministic while keeping the original behavior available (if
+you wish).
+
+I found "Disable While Typing" (in GNOME "Tweaks" -> "Keyboard & Mouse" ->
+"Touchpad") is not perfect. This can ensure you to avoid touchpad interferences
+with minimal user efforts.
+
+If you happen to have more than 10 input methods, they can be used through the
+normal center selection panel if you don't intentionally disable pertinent
+shortcuts.
 
 ## Usage
 
-You first must set up all your input methods from GNOME GUI:
+First, you must set up all your input methods from GNOME GUI:
 
 - `Settings` -> `Keyboard` -> `Input Sources` etc.
 
@@ -16,35 +30,43 @@ Then install this GNOME extensions using your browser from the GNOME extensions 
 
 Afterwards, restart the GNOME shell by log-out and log-in from GUI.  You can
 also use CLI `killall gnome-shell` to log out.  This is essential process to
-get GNOME shell extension to function as expected.
+get GNOME shell extensions to function as expected.
 
-Then, enable this extension from GUI, e.g., `gnome-extensions-app` (**Extensions**)
-in GNOME 43; or from **GNOME tweak** menu in older GNOME.
+Then, enable this extension from GUI, e.g., `gnome-extensions-app`
+(**Extensions**) in GNOME 43 or later; or from **GNOME Tweaks** menu in older
+GNOME. You must set up each shortcut first to use this extension.
 
+The pre-exiting shortcut key can't be reused.  You must disable their usage
+first.
 
-![InputMethods](InputMethods.png)
+(I only tested this extension for GNOME 43.  This extension should work for
+older version if version is set to be ignored.)
 
-You can set each input method to any unused shortcut keys as you wish.  For example, I can think of:
+### Input Method Shortcuts (example screenshot)
 
-- `<Super>Space` (easy access - after disabling it in "Keyboard shortcuts" -> "Typing")
-- `<Super><Shift>Space` (easy access - after disabling it in "Keyboard shortcuts" -> "Typing")
-- `<Super><Control>Space` (easy access)
-- `<Super><Alt>Space` (easy access)
-- `<Super>Return` (easy access)
-- `<Super><Shift>Return` (easy access)
-- `<Super><Control>Return` (easy access)
-- `<Super><Alt>Return` (easy access)
+![Pref - InputMethods](pref-inputmethods.png)
+
+Here, I disabled `<Super>Space` and `<Super><Shift>Space` usages in "Settings"
+-> "Keyboard" -> "Keyboard shortcuts" -> "Typing" before setting up as above.
+
+### Touchpad Shortcuts (example screenshot)
+
+![Pref - Touchpad](pref-touchpad.png)
+
+### Ideas for other shortcut keys
+
+Here are other ideas for shortcut keys.
+
+- `<Super>Return`
+- `<Super><Shift>Return`
+- `<Super><Control>Return`
+- `<Super><Alt>Return`
 - `<Super>u` (**u** for US)
 - `<Super>i` (**i** for International)
 - `<Super>j` (**j** for Japanese)
 - `<Super>k` (**k** for Korean)
+- `<Super>c` (**c** for Chinese)
 - `<Super>z` (**z** for Chinese=zh)
-
-These shortcuts will enable direct quick switching of the input method without slow menu selection.
-
-If you happen to have more than 10 input methods, they can be used through the normal center selection panel.
-
-(I only tested this for GNOME 43 but this extension should work for older version if version is ignored.)
 
 ## Development
 
@@ -68,8 +90,7 @@ Afterwards, restart the GNOME shell by log-out and log-in from GUI.  You can
 also use CLI `killall gnome-shell` to log out.  This is essential process to
 get GNOME shell extension to function as expected.
 
-
-If you want to reorder input method for any reason, here is a esy way:
+If you want to reorder input method for any reason, here is an easy way:
 
 ```sh
 $ gsettings get org.gnome.desktop.input-sources sources
@@ -89,7 +110,8 @@ Resulting extension code was useful and functional for me but it had many rough
 edges since this was my first javascript program without even reading its
 references. Prior to getting this accepted by GNOME extension site,
 **JustPerfection** guided me to fix such rough edges by making me to rewrite
-practically the whole code.
+practically the whole code.  Then, I rewrote whole code using ES6 style and
+added touchpad controls.
 
 See [Keyboard shortcut customization (Input Method)](https://osamuaoki.github.io/en/2023/02/25/debian-usability-2023/#keyboard-shortcut-customization-input-method)
 and [GNOME shell extension for input methods](https://osamuaoki.github.io/en/2023/06/19/gnome-im-1/)

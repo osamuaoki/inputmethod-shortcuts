@@ -11,6 +11,10 @@ function init() {
 
 function fillPreferencesWindow(window) {
     const settings = ExtensionUtils.getSettings();
+    addInputMethodPage(window, settings);
+    addTouchpadPage(window, settings);
+}
+function addInputMethodPage(window, settings) {
 
     const InputSources = new Gio.Settings({ schema_id: 'org.gnome.desktop.input-sources' });
     const InputMethods = InputSources.get_value('sources');
@@ -20,6 +24,7 @@ function fillPreferencesWindow(window) {
     // Create a preferences page
     const page = new Adw.PreferencesPage();
     page.set_title('Input Method Shortcuts');
+    page.set_icon_name('input-keyboard-symbolic');
     window.add(page);
 
     // List of inputmethod settings as a group
@@ -34,7 +39,7 @@ function fillPreferencesWindow(window) {
         let [type, id] = InputMethods.get_child_value(i).deepUnpack();
         row[i] = new Adw.ActionRow({ title: `${id}  (${type})` });
         group.add(row[i]);
-        button[i] = makeImkeyButton(i, settings);
+        button[i] = makeButton(`imkey-${i}`, settings);
         row[i].add_suffix(button[i]);
         row[i].activatable_widget = button[i];
     }
@@ -51,7 +56,39 @@ function fillPreferencesWindow(window) {
     window._settings = settings;
 }
 
-function makeImkeyButton(i, settings) {
+
+function addTouchpadPage(window, settings) {
+    // Create a preferences page
+    const page = new Adw.PreferencesPage();
+    page.set_title('Touchpad Shortcuts');
+    page.set_icon_name('input-touchpad-symbolic');
+    window.add(page);
+
+    // List of inputmethod settings as a group
+    const group = new Adw.PreferencesGroup();
+    page.add(group);
+
+    const row_0 = new Adw.ActionRow({ title: "Touchpad On" });
+    group.add(row_0);
+    const button_0 = makeButton("tpkey-0", settings);
+    row_0.add_suffix(button_0);
+    row_0.activatable_widget = button_0;
+
+    const row_1 = new Adw.ActionRow({ title: "Touchpad Off" });
+    group.add(row_1);
+    const button_1 = makeButton("tpkey-1", settings);
+    row_1.add_suffix(button_1);
+    row_1.activatable_widget = button_1;
+
+    // Extra text to explain
+    const group_extra = new Adw.PreferencesGroup(
+        { title: 'Click each row to set a new touchpad shortcut.\n\nPress Esc to cancel or Backspace to disable keyboard shortcut.' }
+    );
+    page.add(group_extra);
+
+    //window._settings = Touchpad;
+}
+function makeButton(name, settings) {
     const button = new Gtk.Button();
     button.connect('clicked', () => {
         button.set_label('*** Enter unused shortcut key ***');
@@ -63,12 +100,12 @@ function makeImkeyButton(i, settings) {
             let mask = state & Gtk.accelerator_get_default_mod_mask();
             mask &= ~ Gdk.ModifierType.LOCK_MASK;
             if (mask === 0 && keyval === Gdk.KEY_Escape) {
-                updateImkeyButton(button, i, settings);
+                updateButton(button, name, settings);
                 return Gdk.EVENT_STOP;
             }
 
             if (keyval === Gdk.KEY_BackSpace) {
-                settings.set_strv(`imkey-${i}`, []);
+                settings.set_strv(`${name}`, []);
                 return Gdk.EVENT_STOP;
             }
 
@@ -80,7 +117,7 @@ function makeImkeyButton(i, settings) {
                     mask
                 );
                 // console.log(`  binding = ${binding}`);
-                settings.set_strv(`imkey-${i}`, [binding]);
+                settings.set_strv(`${name}`, [binding]);
             }
             return Gdk.EVENT_STOP;
 
@@ -89,17 +126,17 @@ function makeImkeyButton(i, settings) {
         button.show();
     })
 
-    settings.connect(`changed::imkey-${i}`, () => {
-        updateImkeyButton(button, i, settings);
+    settings.connect(`changed::${name}`, () => {
+        updateButton(button, name, settings);
     });
 
-    updateImkeyButton(button, i, settings);
+    updateButton(button, name, settings);
 
     return button;
 }
 
-function updateImkeyButton(button, i, settings) {
-    const text = settings.get_strv(`imkey-${i}`)[0];
+function updateButton(button, name, settings) {
+    const text = settings.get_strv(name)[0];
     if (text) {
         button.set_label(text);
     }
