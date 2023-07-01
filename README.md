@@ -1,12 +1,14 @@
-Keyboard shortcuts for switching input methods under GNOME shell
-================================================================
+Quick keyboard switching among input methods
+============================================
 
 This is a GNOME shell extension that adds custom keyboard shortcuts
 to up to first 10 available input methods under GNOME shell.
 
 ## Usage
 
-You first must set all your input methods from GUI `Settings` -> `Keyboard`.
+You first must set up all your input methods from GNOME GUI:
+
+- `Settings` -> `Keyboard` -> `Input Sources` etc.
 
 Then install this GNOME extensions using your browser from the GNOME extensions site:
 
@@ -18,6 +20,9 @@ get GNOME shell extension to function as expected.
 
 Then, enable this extension from GUI, e.g., `gnome-extensions-app` (**Extensions**)
 in GNOME 43; or from **GNOME tweak** menu in older GNOME.
+
+
+![InputMethods](InputMethods.png)
 
 You can set each input method to any unused shortcut keys as you wish.  For example, I can think of:
 
