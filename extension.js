@@ -21,7 +21,7 @@ class Extension {
             Main.wm.addKeybinding(`imkey-${i}`,
                 this.settings,
                 Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-                Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
+                Shell.ActionMode.ALL,
                 () => Keyboard.getInputSourceManager().inputSources[i].activate()
             );
         };
@@ -31,14 +31,14 @@ class Extension {
         Main.wm.addKeybinding('tpkey-0',
             this.settings,
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-            Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
+            Shell.ActionMode.ALL,
             () => Touchpad.set_string("send-events", "enabled")
         );
         // Emulate "gsettings set org.gnome.desktop.peripherals.touchpad send-events disabled"
         Main.wm.addKeybinding('tpkey-1',
             this.settings,
             Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-            Shell.ActionMode ? Shell.ActionMode.NORMAL : Shell.KeyBindingMode.NORMAL,
+            Shell.ActionMode.ALL,
             () => Touchpad.set_string("send-events", "disabled")
         );
     }
