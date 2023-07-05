@@ -8,7 +8,8 @@ shortcuts for:
 
 This can make keyboard input experiences quick (pop-up-less), non-interfering,
 stateless and deterministic while keeping the original behavior available (if
-you wish).
+you wish).  This shortcut automatically sets xkb to the first one before
+entering ibus input method.  (This fixes issues with xkb=ru etc.)
 
 I found "Disable While Typing" (in GNOME "Tweaks" -> "Keyboard & Mouse" ->
 "Touchpad") is not perfect. This can ensure you to avoid touchpad interferences
@@ -68,6 +69,18 @@ Here are other ideas for shortcut keys.
 - `<Super>c` (**c** for Chinese)
 - `<Super>z` (**z** for Chinese=zh)
 
+### Ways to reorder input methods
+
+If you have multiple xkb methods, you need to reorder input methods so the first xkb method is the preferred one for ibus input methods.
+
+```sh
+$ gsettings get org.gnome.desktop.input-sources sources
+[('xkb', 'ru'), ('xkb', 'us'), ('ibus', 'anthy'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl')]
+$ gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl'), ('ibus', 'anthy'), ('xkb', 'ru')]"
+$ gsettings get org.gnome.desktop.input-sources sources
+[('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl'), ('ibus', 'anthy'), ('xkb', 'ru')]
+```
+
 ## Development
 
 The latest development version is available at:
@@ -89,16 +102,6 @@ directory.
 Afterwards, restart the GNOME shell by log-out and log-in from GUI.  You can
 also use CLI `killall gnome-shell` to log out.  This is essential process to
 get GNOME shell extension to function as expected.
-
-If you want to reorder input method for any reason, here is an easy way:
-
-```sh
-$ gsettings get org.gnome.desktop.input-sources sources
-[('xkb', 'us'), ('ibus', 'anthy'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl')]
-$ gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl'), ('ibus', 'anthy')]"
-$ gsettings get org.gnome.desktop.input-sources sources
-[('xkb', 'us'), ('ibus', 'mozc-jp'), ('xkb', 'us+altgr-intl'), ('ibus', 'anthy')]
-```
 
 This code was started to be based on similar GNOME shell extensions and
 previous method to switch input methods:

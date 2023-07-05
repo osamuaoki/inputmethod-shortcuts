@@ -16,14 +16,41 @@ class Extension {
 
     enable () {
         this.settings = ExtensionUtils.getSettings();
-        // Switch to the input method $i
-        for (let i = 0; i < MAX_SHORTCUTS; i++) {
-            Main.wm.addKeybinding(`imkey-${i}`,
-                this.settings,
-                Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
-                Shell.ActionMode.ALL,
-                () => Keyboard.getInputSourceManager().inputSources[i].activate()
-            );
+        const InputSources = new Gio.Settings({ schema_id: 'org.gnome.desktop.input-sources' });
+        const InputMethods = InputSources.get_value('sources');
+        const nInputMethods = ( (InputMethods.n_children() < MAX_SHORTCUTS ) ? InputMethods.n_children() : MAX_SHORTCUTS ) ;
+
+            // Switch to the input method $i
+        let i_base = -1; // invalid to indicate no xkb set
+        for (let i = 0; i < nInputMethods; i++) {
+            let [type, _] = InputMethods.get_child_value(i).deepUnpack();
+            if ( type === "xkb" ) { // id isn't used
+                if (i_base === -1 ) {
+                    i_base = i;
+                }
+            }
+        }
+        // i_base is the first xkb setting if 0 or plus value
+        for (let i = 0; i < nInputMethods; i++) {
+            let [type, _] = InputMethods.get_child_value(i).deepUnpack();
+            if ( i_base === -1 || type === "xkb" ) {
+                Main.wm.addKeybinding(`imkey-${i}`,
+                    this.settings,
+                    Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+                    Shell.ActionMode.ALL,
+                    () => Keyboard.getInputSourceManager().inputSources[i].activate()
+                );
+            } else {
+                Main.wm.addKeybinding(`imkey-${i}`,
+                    this.settings,
+                    Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+                    Shell.ActionMode.ALL,
+                    () => {
+                        Keyboard.getInputSourceManager().inputSources[i_base].activate();
+                        Keyboard.getInputSourceManager().inputSources[i].activate();
+                    }
+                );
+            };
         };
         // Touchpad control
         const Touchpad = new Gio.Settings({ schema_id: 'org.gnome.desktop.peripherals.touchpad' });

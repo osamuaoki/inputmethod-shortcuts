@@ -34,7 +34,6 @@ function addInputMethodPage(window, settings) {
     // Create inputmethod setting rows, each with title and (right aligned) button
     const row = Array(nInputMethods);
     const button = Array(nInputMethods);
-    // Menu rows for all active IM
     for (let i = 0; i < nInputMethods; i++) {
         let [type, id] = InputMethods.get_child_value(i).deepUnpack();
         row[i] = new Adw.ActionRow({ title: `${id}  (${type})` });
@@ -43,6 +42,7 @@ function addInputMethodPage(window, settings) {
         row[i].add_suffix(button[i]);
         row[i].activatable_widget = button[i];
     }
+    //settings.set_strv("ixkbbase", ixkbbase);
     // Ensue to unset unused shortcuts
     for (let i = nInputMethods; i < MAX_SHORTCUTS; i++) {
         settings.set_strv(`imkey-${i}`, []);
