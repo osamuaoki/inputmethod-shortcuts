@@ -3,21 +3,23 @@ Quick switching of input method and touchpad
 
 This is a GNOME shell extension which allows us to set up custom keyboard
 shortcuts for:
-- switching input method (first 10 available ones) and
-- switching touchpad.
+- quick switching of input method (first 10 available ones) and
+- quick switching of touchpad.
 
 This can make keyboard input experiences quick (pop-up-less), non-interfering,
 stateless and deterministic while keeping the original behavior available (if
-you wish).  This shortcut automatically sets xkb to the first one before
-entering ibus input method.  (This fixes issues with xkb=ru etc.)
+you wish).  This shortcut can automatically sets xkb to the first one before
+entering ibus input method.  (This default setting fixes issues of ibus with
+non-latin inputs such as xkb=ru etc. This is a configurable feature.)
 
 I found "Disable While Typing" (in GNOME "Tweaks" -> "Keyboard & Mouse" ->
-"Touchpad") is not perfect. This can ensure you to avoid touchpad interferences
-with minimal user efforts.
+"Touchpad") is not perfect solution. Keyboard shortcuts can ensure you to avoid
+touchpad interferences with minimal user efforts.
 
 If you happen to have more than 10 input methods, they can be used through the
 normal center selection panel if you don't intentionally disable pertinent
-shortcuts.
+shortcuts.  If you intentionally disable such shortcuts, these convenient
+keys can be used by this extension.
 
 ## Usage
 
@@ -40,28 +42,31 @@ GNOME. You must set up each shortcut first to use this extension.
 The pre-exiting shortcut key can't be reused.  You must disable their usage
 first.
 
+If you change installed input methods, it is good idea to restart the GNOME
+shell by log-out and log-in from GUI.
+
 (I only tested this extension for GNOME 43.  This extension should work for
 older version if version is set to be ignored.)
 
 ### Input Method Shortcuts (example screenshot)
 
-![Pref - InputMethods](pref-inputmethods.png)
+![Pref - InputMethods](pref-im.png)
 
 Here, I disabled `<Super>Space` and `<Super><Shift>Space` usages in "Settings"
 -> "Keyboard" -> "Keyboard shortcuts" -> "Typing" before setting up as above.
 
 ### Touchpad Shortcuts (example screenshot)
 
-![Pref - Touchpad](pref-touchpad.png)
+![Pref - Touchpad](pref-tp.png)
+
+### Operation Preferences (example screenshot)
+
+![Pref - Touchpad](pref-op.png)
 
 ### Ideas for other shortcut keys
 
 Here are other ideas for shortcut keys.
 
-- `<Super>Return`
-- `<Super><Shift>Return`
-- `<Super><Control>Return`
-- `<Super><Alt>Return`
 - `<Super>u` (**u** for US)
 - `<Super>i` (**i** for International)
 - `<Super>j` (**j** for Japanese)
@@ -71,7 +76,8 @@ Here are other ideas for shortcut keys.
 
 ### Ways to reorder input methods
 
-If you have multiple xkb methods, you need to reorder input methods so the first xkb method is the preferred one for ibus input methods.
+If you have multiple xkb methods, you may need to reorder input methods so the
+first xkb method may be set as the preferred one for ibus input methods.
 
 ```sh
 $ gsettings get org.gnome.desktop.input-sources sources

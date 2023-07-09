@@ -49,5 +49,9 @@
             <default>['']</default>
             <summary>Shortcut to touchpad off</summary>
         </key>
+        <key type="b" name="primary-xkb">
+            <default>true</default>
+            <summary>Set xkb to the first one before entering any ibus</summary>
+        </key>
     </schema>
 </schemalist>

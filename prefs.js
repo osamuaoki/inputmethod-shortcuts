@@ -3,28 +3,52 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 //const _ = ExtensionUtils.gettext;
 
-const MAX_SHORTCUTS = 10;
+const MAX_INPUT_METHODS = 10;
+const MAX_TOUCHPADS = 2;
+const InputSources = new Gio.Settings({
+    schema_id: 'org.gnome.desktop.input-sources'
+});
+const InputMethods = InputSources.get_value('sources');
+// nInputMethods : number of input method shortcuts managed
+const nInputMethods = (
+    (InputMethods.n_children() < MAX_INPUT_METHODS )
+        ? InputMethods.n_children()
+        : MAX_INPUT_METHODS
+);
 
 function init() {
    //ExtensionUtils.initTranslations();
-}
+};
 
 function fillPreferencesWindow(window) {
     const settings = ExtensionUtils.getSettings();
-    addInputMethodPage(window, settings);
-    addTouchpadPage(window, settings);
-}
-function addInputMethodPage(window, settings) {
+    const im_labels = Array(nInputMethods);
+    for (let i = 0; i < nInputMethods; i++) {
+        let [type, id] = InputMethods.get_child_value(i).deepUnpack();
+        im_labels[i] = `IM${i}: ${id}  (${type})`;
+    };
+    addShortcutPage(window, settings,
+        'Input Method Shortcuts', 'input-keyboard-symbolic',
+        'imkey', im_labels, MAX_INPUT_METHODS
+    );
+    const tp_labels = Array(MAX_TOUCHPADS);
+    tp_labels[0] = 'Touchpad On';
+    tp_labels[1] = 'Touchpad Off';
+    addShortcutPage(window, settings,
+        'Touchpad Shortcuts', 'input-touchpad-symbolic',
+        'tpkey', tp_labels, MAX_TOUCHPADS
+    );
+    addSwitchPage(window, settings,
+        'Operation Preference', 'preferences-system-symbolic'
+    );
+};
 
-    const InputSources = new Gio.Settings({ schema_id: 'org.gnome.desktop.input-sources' });
-    const InputMethods = InputSources.get_value('sources');
-    // nInputMethods : number of input method shortcuts managed
-    const nInputMethods = ( (InputMethods.n_children() < MAX_SHORTCUTS ) ? InputMethods.n_children() : MAX_SHORTCUTS ) ;
+function addShortcutPage(window, settings, title, icon_name, prefix, labels, max) {
 
     // Create a preferences page
     const page = new Adw.PreferencesPage();
-    page.set_title('Input Method Shortcuts');
-    page.set_icon_name('input-keyboard-symbolic');
+    page.set_title(title);
+    page.set_icon_name(icon_name);
     window.add(page);
 
     // List of inputmethod settings as a group
@@ -32,20 +56,18 @@ function addInputMethodPage(window, settings) {
     page.add(group);
 
     // Create inputmethod setting rows, each with title and (right aligned) button
-    const row = Array(nInputMethods);
-    const button = Array(nInputMethods);
-    for (let i = 0; i < nInputMethods; i++) {
-        let [type, id] = InputMethods.get_child_value(i).deepUnpack();
-        row[i] = new Adw.ActionRow({ title: `${id}  (${type})` });
+    const row = Array(labels.length)
+    const button = Array(labels.length)
+    for (let i = 0; i < labels.length; i++) {
+        row[i] = new Adw.ActionRow({ title: `${labels[i]}` });
         group.add(row[i]);
-        button[i] = makeButton(`imkey-${i}`, settings);
+        button[i] = makeButton(`${prefix}-${i}`, settings);
         row[i].add_suffix(button[i]);
         row[i].activatable_widget = button[i];
     }
-    //settings.set_strv("ixkbbase", ixkbbase);
     // Ensue to unset unused shortcuts
-    for (let i = nInputMethods; i < MAX_SHORTCUTS; i++) {
-        settings.set_strv(`imkey-${i}`, []);
+    for (let i = labels.length; i < max; i++) {
+        settings.set_strv(`${prefix}-${i}`, []);
     }
     // Extra text to explain
     const group_extra = new Adw.PreferencesGroup(
@@ -56,39 +78,7 @@ function addInputMethodPage(window, settings) {
     window._settings = settings;
 }
 
-
-function addTouchpadPage(window, settings) {
-    // Create a preferences page
-    const page = new Adw.PreferencesPage();
-    page.set_title('Touchpad Shortcuts');
-    page.set_icon_name('input-touchpad-symbolic');
-    window.add(page);
-
-    // List of inputmethod settings as a group
-    const group = new Adw.PreferencesGroup();
-    page.add(group);
-
-    const row_0 = new Adw.ActionRow({ title: "Touchpad On" });
-    group.add(row_0);
-    const button_0 = makeButton("tpkey-0", settings);
-    row_0.add_suffix(button_0);
-    row_0.activatable_widget = button_0;
-
-    const row_1 = new Adw.ActionRow({ title: "Touchpad Off" });
-    group.add(row_1);
-    const button_1 = makeButton("tpkey-1", settings);
-    row_1.add_suffix(button_1);
-    row_1.activatable_widget = button_1;
-
-    // Extra text to explain
-    const group_extra = new Adw.PreferencesGroup(
-        { title: 'Click each row to set a new touchpad shortcut.\n\nPress Esc to cancel or Backspace to disable keyboard shortcut.' }
-    );
-    page.add(group_extra);
-
-    //window._settings = Touchpad;
-}
-function makeButton(name, settings) {
+function makeButton(shortcut_name, settings) {
     const button = new Gtk.Button();
     button.connect('clicked', () => {
         button.set_label('*** Enter unused shortcut key ***');
@@ -100,12 +90,12 @@ function makeButton(name, settings) {
             let mask = state & Gtk.accelerator_get_default_mod_mask();
             mask &= ~ Gdk.ModifierType.LOCK_MASK;
             if (mask === 0 && keyval === Gdk.KEY_Escape) {
-                updateButton(button, name, settings);
+                updateButton(button, shortcut_name, settings);
                 return Gdk.EVENT_STOP;
             }
 
             if (keyval === Gdk.KEY_BackSpace) {
-                settings.set_strv(`${name}`, []);
+                settings.set_strv(`${shortcut_name}`, []);
                 return Gdk.EVENT_STOP;
             }
 
@@ -117,7 +107,7 @@ function makeButton(name, settings) {
                     mask
                 );
                 // console.log(`  binding = ${binding}`);
-                settings.set_strv(`${name}`, [binding]);
+                settings.set_strv(`${shortcut_name}`, [binding]);
             }
             return Gdk.EVENT_STOP;
 
@@ -126,24 +116,24 @@ function makeButton(name, settings) {
         button.show();
     })
 
-    settings.connect(`changed::${name}`, () => {
-        updateButton(button, name, settings);
+    settings.connect(`changed::${shortcut_name}`, () => {
+        updateButton(button, shortcut_name, settings);
     });
 
-    updateButton(button, name, settings);
+    updateButton(button, shortcut_name, settings);
 
     return button;
 }
 
-function updateButton(button, name, settings) {
-    const text = settings.get_strv(name)[0];
+function updateButton(button, shortcut_name, settings) {
+    const text = settings.get_strv(shortcut_name)[0];
     if (text) {
         button.set_label(text);
     }
     else {
         button.set_label('Disabled');
-    }
-}
+    };
+};
 
 function isBindingValid({ mask, keycode, keyval }) {
     if ((mask === 0 || mask === Gdk.SHIFT_MASK) && keycode !== 0) {
@@ -159,12 +149,54 @@ function isBindingValid({ mask, keycode, keyval }) {
             || (keyval >= Gdk.KEY_Thai_kokai && keyval <= Gdk.KEY_Thai_lekkao)
             || (keyval >= Gdk.KEY_Hangul_Kiyeog && keyval <= Gdk.KEY_Hangul_J_YeorinHieuh)
             || (keyval === Gdk.KEY_space && mask === 0)
-        ) {
+        )
+        {
             return false;
-        }
-    }
+        };
+    };
 
     return Gtk.accelerator_valid(keyval, mask)
         || (keyval === Gdk.KEY_Tab && mask !== 0);
+};
+
+function addSwitchPage(window, settings, title, icon_name) {
+    let id_xkb = ''; // start with invalid index to indicate no xkb set
+    let i_xkb = -1; // start with invalid index to indicate no xkb set
+    for (let i = 0; i < nInputMethods; i++) {
+        let [type, id] = InputMethods.get_child_value(i).deepUnpack();
+        if ( type === "xkb" ) { // id isn't used
+            if (i_xkb === -1 ) {
+                id_xkb = id;
+                i_xkb = i;  // the first index for xkb
+            }
+        }
+    }
+    // Create a preferences page
+    const page = new Adw.PreferencesPage();
+    page.set_title(title);
+    page.set_icon_name(icon_name);
+    window.add(page);
+
+    // List of inputmethod settings as a group
+    const group = new Adw.PreferencesGroup();
+    page.add(group);
+
+    // Step though primary xkb before setting ibus IM : default=ON
+    const row_0 = new Adw.ActionRow({
+        title: `Set to 'IM${i_xkb}: ${id_xkb}  (xkb)' (the first xkb)\nbefore entering any ibus input methods`
+    });
+    group.add(row_0);
+    let primary_xkb = new Gtk.Switch({
+        active: settings.get_boolean('primary-xkb'),
+        halign: Gtk.Align.END,
+        vexpand: false,
+        hexpand: false,
+        margin_top: 18,
+        margin_bottom: 18
+    })
+    settings.bind('primary-xkb', primary_xkb, 'active', Gio.SettingsBindFlags.DEFAULT)
+    row_0.add_suffix(primary_xkb);
+    row_0.activatable_widget = primary_xkb;
+    window._settings = settings;
 }
 
