@@ -5,16 +5,6 @@ const Me = ExtensionUtils.getCurrentExtension();
 
 const MAX_INPUT_METHODS = 10;
 const MAX_TOUCHPADS = 2;
-const InputSources = new Gio.Settings({
-    schema_id: 'org.gnome.desktop.input-sources'
-});
-const InputMethods = InputSources.get_value('sources');
-// nInputMethods : number of input method shortcuts managed
-const nInputMethods = (
-    (InputMethods.n_children() < MAX_INPUT_METHODS )
-        ? InputMethods.n_children()
-        : MAX_INPUT_METHODS
-);
 
 function init() {
    //ExtensionUtils.initTranslations();
@@ -22,24 +12,42 @@ function init() {
 
 function fillPreferencesWindow(window) {
     const settings = ExtensionUtils.getSettings();
+    const InputSources = new Gio.Settings({
+        schema_id: 'org.gnome.desktop.input-sources'
+    });
+    const InputMethods = InputSources.get_value('sources');
+    // nInputMethods : number of input method shortcuts managed
+    const nInputMethods = (
+        (InputMethods.n_children() < MAX_INPUT_METHODS )
+            ? InputMethods.n_children()
+            : MAX_INPUT_METHODS
+    );
     const im_labels = Array(nInputMethods);
+    let id_xkb = ''; // start with invalid index to indicate no xkb set
+    let i_xkb = -1; // start with invalid index to indicate no xkb set
     for (let i = 0; i < nInputMethods; i++) {
         let [type, id] = InputMethods.get_child_value(i).deepUnpack();
         im_labels[i] = `IM${i}: ${id}  (${type})`;
+        if ( type === "xkb" ) { // id isn't used
+            if (i_xkb === -1 ) {
+                id_xkb = id;
+                i_xkb = i;  // the first index for xkb
+            };
+        };
     };
+    const tp_labels = Array(MAX_TOUCHPADS);
+    tp_labels[0] = 'Touchpad On';
+    tp_labels[1] = 'Touchpad Off';
     addShortcutPage(window, settings,
         'Input Method Shortcuts', 'input-keyboard-symbolic',
         'imkey', im_labels, MAX_INPUT_METHODS
     );
-    const tp_labels = Array(MAX_TOUCHPADS);
-    tp_labels[0] = 'Touchpad On';
-    tp_labels[1] = 'Touchpad Off';
     addShortcutPage(window, settings,
         'Touchpad Shortcuts', 'input-touchpad-symbolic',
         'tpkey', tp_labels, MAX_TOUCHPADS
     );
     addSwitchPage(window, settings,
-        'Operation Preference', 'preferences-system-symbolic'
+        'Operation Preference', 'preferences-system-symbolic', i_xkb, id_xkb
     );
 };
 
@@ -159,18 +167,7 @@ function isBindingValid({ mask, keycode, keyval }) {
         || (keyval === Gdk.KEY_Tab && mask !== 0);
 };
 
-function addSwitchPage(window, settings, title, icon_name) {
-    let id_xkb = ''; // start with invalid index to indicate no xkb set
-    let i_xkb = -1; // start with invalid index to indicate no xkb set
-    for (let i = 0; i < nInputMethods; i++) {
-        let [type, id] = InputMethods.get_child_value(i).deepUnpack();
-        if ( type === "xkb" ) { // id isn't used
-            if (i_xkb === -1 ) {
-                id_xkb = id;
-                i_xkb = i;  // the first index for xkb
-            }
-        }
-    }
+function addSwitchPage(window, settings, title, icon_name, i_xkb, id_xkb) {
     // Create a preferences page
     const page = new Adw.PreferencesPage();
     page.set_title(title);
