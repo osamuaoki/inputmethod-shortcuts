@@ -183,7 +183,7 @@ function addSwitchPage(window, settings, title, icon_name) {
 
     // Step though primary xkb before setting ibus IM : default=ON
     const row_0 = new Adw.ActionRow({
-        title: `Set to 'IM${i_xkb}: ${id_xkb}  (xkb)' (the first xkb)\nbefore entering any ibus input methods`
+        title: `Set to 'IM${i_xkb}: ${id_xkb} (xkb)' (the first xkb)\nbefore entering any ibus input methods`
     });
     group.add(row_0);
     let primary_xkb = new Gtk.Switch({
