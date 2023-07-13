@@ -4,7 +4,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 //const _ = ExtensionUtils.gettext;
 
 const MAX_INPUT_METHODS = 10;
-const MAX_TOUCHPADS = 2;
+const MAX_TOUCHPADS = 3;
 
 function init() {
    //ExtensionUtils.initTranslations();
@@ -16,7 +16,7 @@ function fillPreferencesWindow(window) {
         schema_id: 'org.gnome.desktop.input-sources'
     });
     const InputMethods = InputSources.get_value('sources');
-    // nInputMethods : number of input method shortcuts managed
+    // nInputMethods : number of input method shortcuts managed (max 10)
     const nInputMethods = (
         (InputMethods.n_children() < MAX_INPUT_METHODS )
             ? InputMethods.n_children()
@@ -38,6 +38,7 @@ function fillPreferencesWindow(window) {
     const tp_labels = Array(MAX_TOUCHPADS);
     tp_labels[0] = 'Touchpad On';
     tp_labels[1] = 'Touchpad Off';
+    tp_labels[2] = 'Touchpad Toggle';
     addShortcutPage(window, settings,
         'Input Method Shortcuts', 'input-keyboard-symbolic',
         'imkey', im_labels, MAX_INPUT_METHODS

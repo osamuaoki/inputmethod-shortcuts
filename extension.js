@@ -59,6 +59,19 @@ class Extension {
             Shell.ActionMode.ALL,
             () => Touchpad.set_string("send-events", "disabled")
         );
+        // Emulate "gsettings set org.gnome.desktop.peripherals.touchpad send-events enable/disabled"
+        Main.wm.addKeybinding('tpkey-2',
+            this.settings,
+            Meta.KeyBindingFlags.IGNORE_AUTOREPEAT,
+            Shell.ActionMode.ALL,
+            () => {
+                if (Touchpad.get_string("send-events") === "enabled") {
+                    Touchpad.set_string("send-events", "disabled");
+                } else {
+                    Touchpad.set_string("send-events", "enabled");
+                };
+            }
+        );
     };
 
     disable() {
@@ -67,6 +80,7 @@ class Extension {
         };
         Main.wm.removeKeybinding('tpkey-0');
         Main.wm.removeKeybinding('tpkey-1');
+        Main.wm.removeKeybinding('tpkey-2');
         this.settings = null;
     };
 };
