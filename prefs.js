@@ -23,22 +23,22 @@ function fillPreferencesWindow(window) {
             : MAX_INPUT_METHODS
     );
     const im_labels = Array(nInputMethods);
-    let id_xkb = ''; // start with invalid index to indicate no xkb set
-    let i_xkb = -1; // start with invalid index to indicate no xkb set
+    let id0_xkb = ''; // start with invalid index to indicate no xkb set
+    let i0_xkb = -1; // start with invalid index to indicate no xkb set
     for (let i = 0; i < nInputMethods; i++) {
         let [type, id] = InputMethods.get_child_value(i).deepUnpack();
-        im_labels[i] = `IM${i}: ${id}  (${type})`;
-        if ( type === "xkb" ) { // id isn't used
-            if (i_xkb === -1 ) {
-                id_xkb = id;
-                i_xkb = i;  // the first index for xkb
+        im_labels[i] = `IM${i}: <b>${id}</b> (<i>${type}</i>)`;
+        if ( type === "xkb" ) {
+            if (i0_xkb === -1 ) {
+                id0_xkb = id;
+                i0_xkb = i;  // the first index for xkb
             };
         };
     };
     const tp_labels = Array(MAX_TOUCHPADS);
-    tp_labels[0] = 'Touchpad On';
-    tp_labels[1] = 'Touchpad Off';
-    tp_labels[2] = 'Touchpad Toggle';
+    tp_labels[0] = 'Touchpad <b>On</b>';
+    tp_labels[1] = 'Touchpad <b>Off</b>';
+    tp_labels[2] = 'Touchpad <b>Toggle</b>';
     addShortcutPage(window, settings,
         'Input Method Shortcuts', 'input-keyboard-symbolic',
         'imkey', im_labels, MAX_INPUT_METHODS
@@ -48,7 +48,7 @@ function fillPreferencesWindow(window) {
         'tpkey', tp_labels, MAX_TOUCHPADS
     );
     addSwitchPage(window, settings,
-        'Operation Preference', 'preferences-system-symbolic', i_xkb, id_xkb
+        'Operation Preference', 'preferences-system-symbolic', i0_xkb, id0_xkb
     );
 };
 
@@ -68,7 +68,7 @@ function addShortcutPage(window, settings, title, icon_name, prefix, labels, max
     const row = Array(labels.length)
     const button = Array(labels.length)
     for (let i = 0; i < labels.length; i++) {
-        row[i] = new Adw.ActionRow({ title: `${labels[i]}` });
+        row[i] = new Adw.ActionRow({ title: `${labels[i]}`, use_markup: true });
         group.add(row[i]);
         button[i] = makeButton(`${prefix}-${i}`, settings);
         row[i].add_suffix(button[i]);
@@ -79,10 +79,15 @@ function addShortcutPage(window, settings, title, icon_name, prefix, labels, max
         settings.set_strv(`${prefix}-${i}`, []);
     }
     // Extra text to explain
-    const group_extra = new Adw.PreferencesGroup(
-        { title: 'Click each row to set a new keyboard shortcut.\n\nPress Esc to cancel or Backspace to disable keyboard shortcut.' }
-    );
+    const group_extra = new Adw.PreferencesGroup();
     page.add(group_extra);
+    row_extra = new Adw.ActionRow(
+        {
+            title: 'Click each row to set a new keyboard shortcut.\nPress <b>Esc</b> to cancel or <b>Backspace</b> to disable keyboard shortcut.',
+            use_markup: true
+        }
+    );
+    group_extra.add(row_extra)
 
     window._settings = settings;
 }
@@ -168,7 +173,7 @@ function isBindingValid({ mask, keycode, keyval }) {
         || (keyval === Gdk.KEY_Tab && mask !== 0);
 };
 
-function addSwitchPage(window, settings, title, icon_name, i_xkb, id_xkb) {
+function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
     // Create a preferences page
     const page = new Adw.PreferencesPage();
     page.set_title(title);
@@ -181,20 +186,38 @@ function addSwitchPage(window, settings, title, icon_name, i_xkb, id_xkb) {
 
     // Step though primary xkb before setting ibus IM : default=ON
     const row_0 = new Adw.ActionRow({
-        title: `Set to 'IM${i_xkb}: ${id_xkb}  (xkb)' (the first xkb)\nbefore entering any ibus input methods`
+        use_markup: true
     });
+    if (i0_xkb >= 0) {
+        row_0.set_title(`Set to the first <i>xkb</i> (currently, IM${i0_xkb}: <b>${id0_xkb}</b>) before using any <i>ibus</i>.\nThis is helpful when IM can select non-latin <i>xkb</i>.`);
+    } else {
+        row_0.set_title('Nothing to configure (since no <i>xkb</i> are selected as IM)');
+    }
     group.add(row_0);
-    let primary_xkb = new Gtk.Switch({
-        active: settings.get_boolean('primary-xkb'),
-        halign: Gtk.Align.END,
-        vexpand: false,
-        hexpand: false,
-        margin_top: 18,
-        margin_bottom: 18
-    })
-    settings.bind('primary-xkb', primary_xkb, 'active', Gio.SettingsBindFlags.DEFAULT)
-    row_0.add_suffix(primary_xkb);
-    row_0.activatable_widget = primary_xkb;
+    if (i0_xkb >= 0) {
+        let primary_xkb = new Gtk.Switch({
+            active: settings.get_boolean('primary-xkb'),
+            halign: Gtk.Align.END,
+            vexpand: false,
+            hexpand: false,
+            margin_top: 18,
+            margin_bottom: 18
+        })
+        settings.bind('primary-xkb', primary_xkb, 'active', Gio.SettingsBindFlags.DEFAULT)
+        row_0.add_suffix(primary_xkb);
+        row_0.activatable_widget = primary_xkb;
+    }
+    // Extra text to explain
+    const group_extra = new Adw.PreferencesGroup();
+    page.add(group_extra);
+    row_extra = new Adw.ActionRow(
+        {
+            title: '<a href="https://github.com/osamuaoki/inputmethod-shortcuts">See more on the upstream document</a>',
+            use_markup: true
+        }
+    );
+    group_extra.add(row_extra)
+
     window._settings = settings;
 }
 
