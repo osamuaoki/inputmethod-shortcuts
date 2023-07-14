@@ -50,18 +50,26 @@ older version if version is set to be ignored.)
 
 ### Input Method Shortcuts (example screenshot)
 
-![Pref - InputMethods](pref-im.png)
+![InputMethod Shortcuts](pref-im.png)
 
 Here, I disabled `<Super>Space` and `<Super><Shift>Space` usages in "Settings"
 -> "Keyboard" -> "Keyboard shortcuts" -> "Typing" before setting up as above.
 
+Please note that, if an ibus can offer its internal shortcuts to activate input
+method engine (IME) and to deactivate IME by using direct input mode just with
+xkb for latin character set, switching between IME and direct input mode within
+ibus is quicker than using Desktop based input method switching functionality
+handled by this extension.
+
 ### Touchpad Shortcuts (example screenshot)
 
-![Pref - Touchpad](pref-tp.png)
+![Touchpad Shortcuts](pref-tp.png)
 
-### Operation Preferences (example screenshot)
+Please note that you don't need to set all shortcut bindings.
 
-![Pref - Touchpad](pref-op.png)
+### Operation Preference (example screenshot)
+
+![Operation Preference](pref-op.png)
 
 ### Ideas for other shortcut keys
 
@@ -121,6 +129,10 @@ references. Prior to getting this accepted by GNOME extension site,
 **JustPerfection** guided me to fix such rough edges by making me to rewrite
 practically the whole code.  Then, I rewrote whole code using ES6 style and
 added touchpad controls.
+
+For touchpad, I wanted to have 2 independent shortcuts to turn it on and off.
+So I added them to this extension.  Since making toggling available was
+trivial, I added it, too.  But I am not using it.
 
 See [Keyboard shortcut customization (Input Method)](https://osamuaoki.github.io/en/2023/02/25/debian-usability-2023/#keyboard-shortcut-customization-input-method)
 and [GNOME shell extension for input methods](https://osamuaoki.github.io/en/2023/06/19/gnome-im-1/)
