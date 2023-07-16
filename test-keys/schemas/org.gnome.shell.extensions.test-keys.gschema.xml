@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+    <schema id="org.gnome.shell.extensions.test-keys" path="/org/gnome/shell/extensions/test-keys/">
+        <key type="as" name="key">
+            <default>['']</default>
+            <summary>Key pressed</summary>
+        </key>
+        <key type="b" name="filter-mode">
+            <default>true</default>
+            <summary>Set filter mode</summary>
+        </key>
+    </schema>
+</schemalist>
