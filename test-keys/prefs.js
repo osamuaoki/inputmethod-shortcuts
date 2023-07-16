@@ -130,6 +130,29 @@ function updateButton(button, shortcut_name, settings) {
     };
 };
 
+// Functions from https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/main/panels/keyboard/keyboard-shortcuts.c
+// Adopt from https://github.com/jqno/gnome-happy-appy-hotkey.git
+function keyvalIsForbidden(keyval) {
+    return [
+        // Navigation keys
+        Gdk.KEY_Home,
+        Gdk.KEY_Left,
+        Gdk.KEY_Up,
+        Gdk.KEY_Right,
+        Gdk.KEY_Down,
+        Gdk.KEY_Page_Up,
+        Gdk.KEY_Page_Down,
+        Gdk.KEY_End,
+        Gdk.KEY_Tab,
+
+        // Return
+        Gdk.KEY_KP_Enter, //    65421 = 0xFF8D
+        Gdk.KEY_Return, //      65293 = 0xFF0D
+
+        Gdk.KEY_Mode_switch, // 65406 = 0xFF7E
+    ].includes(keyval);
+};
+
 function isBindingValid({ mask, keycode, keyval }) {
     if ((mask === 0 || mask === Gdk.SHIFT_MASK) && keycode !== 0) {
         if (
@@ -144,6 +167,7 @@ function isBindingValid({ mask, keycode, keyval }) {
             || (keyval >= Gdk.KEY_Thai_kokai && keyval <= Gdk.KEY_Thai_lekkao)
             || (keyval >= Gdk.KEY_Hangul_Kiyeog && keyval <= Gdk.KEY_Hangul_J_YeorinHieuh)
             || (keyval === Gdk.KEY_space && mask === 0)
+            || keyvalIsForbidden(keyval)
         )
         {
             return false;
