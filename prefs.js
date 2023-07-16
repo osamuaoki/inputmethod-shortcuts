@@ -108,8 +108,9 @@ function makeButton(shortcut_name, settings) {
                 return Gdk.EVENT_STOP;
             }
 
-            if (keyval === Gdk.KEY_BackSpace) {
+            if (mask === 0 && keyval === Gdk.KEY_BackSpace) {
                 settings.set_strv(`${shortcut_name}`, []);
+                updateButton(button, shortcut_name, settings);
                 return Gdk.EVENT_STOP;
             }
 
