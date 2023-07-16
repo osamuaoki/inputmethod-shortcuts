@@ -98,7 +98,10 @@ function makeButton(shortcut_name, settings) {
                 //settings.set_strv(`${shortcut_name}`, [binding]);
                 // use [1] to retain parameter situation
                 // keyval is ASCII for normal keys in US
-                settings.set_strv(`${shortcut_name}`, [binding, `  keyval\t=0x${keyval.toString(16)}\n  keycode\t=0x${keycode.toString(16)}\n  mask\t\t=0x${mask.toString(16)}\n  state\t\t=0x${state.toString(16)}\n  def_mask\t=0x${def_mask.toString(16)}\n  filter\t=${filter_mode}`]);
+                let mask_0 = (mask === 0 );
+                let mask_s = (mask === Gdk.ModifierType.SHIFT_MASK);
+                let keycode_nz = (keycode !== 0);
+                settings.set_strv(`${shortcut_name}`, [binding, `  keyval\t=0x${keyval.toString(16)}\n  keycode\t=0x${keycode.toString(16)}\n  mask\t\t=0x${mask.toString(16)}\n  state\t\t=0x${state.toString(16)}\n  def_mask\t=0x${def_mask.toString(16)}\n  filter\t=${filter_mode}\n  mask===0 ${mask_0} / mask===SHIFT ${mask_s} / keycode !== 0 ${keycode_nz}\n *** Gdk.SHIFT_MASK=${Gdk.SHIFT_MASK} / Gdk.ModifierType.SHIFT_MASK=${Gdk.ModifierType.SHIFT_MASK}`]);
             }
             return Gdk.EVENT_STOP;
 
@@ -131,6 +134,7 @@ function updateButton(button, shortcut_name, settings) {
 };
 
 // Functions from https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/main/panels/keyboard/keyboard-shortcuts.c
+// Let's keep out from cursor and return (with or without SHIFT pressed)
 // Adopt from https://github.com/jqno/gnome-happy-appy-hotkey.git
 function keyvalIsForbidden(keyval) {
     return [
@@ -146,15 +150,15 @@ function keyvalIsForbidden(keyval) {
         Gdk.KEY_Tab,
 
         // Return
-        Gdk.KEY_KP_Enter, //    65421 = 0xFF8D
-        Gdk.KEY_Return, //      65293 = 0xFF0D
+        Gdk.KEY_KP_Enter, //    65421 = 0xFF8D same as ibus/src/ibuskeysyms.h as IBUS_KEY_KP_Enter
+        Gdk.KEY_Return, //      65293 = 0xFF0D same as ibus/src/ibuskeysyms.h as IBUS_KEY_Return
 
-        Gdk.KEY_Mode_switch, // 65406 = 0xFF7E
+        Gdk.KEY_Mode_switch, // 65406 = 0xFF7E same as ibus/src/ibuskeysyms.h as IBUS_KEY_Mode_switch
     ].includes(keyval);
 };
 
 function isBindingValid({ mask, keycode, keyval }) {
-    if ((mask === 0 || mask === Gdk.SHIFT_MASK) && keycode !== 0) {
+    if ((mask === 0 || mask === Gdk.ModifierType.SHIFT_MASK) && keycode !== 0) {
         if (
             (keyval >= Gdk.KEY_a && keyval <= Gdk.KEY_z)
             || (keyval >= Gdk.KEY_A && keyval <= Gdk.KEY_Z)
@@ -176,5 +180,6 @@ function isBindingValid({ mask, keycode, keyval }) {
 
     return Gtk.accelerator_valid(keyval, mask)
         || (keyval === Gdk.KEY_Tab && mask !== 0);
+    // in addition to Gtk.accelerator_valid, Control-Tab, Alt-Tab, Super-Tab are "true"
 };
 
