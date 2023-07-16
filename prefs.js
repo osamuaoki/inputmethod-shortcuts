@@ -149,8 +149,32 @@ function updateButton(button, shortcut_name, settings) {
     };
 };
 
+// Functions from https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/main/panels/keyboard/keyboard-shortcuts.c
+// Let's keep out from cursor and return (with or without SHIFT pressed)
+// Adopt from https://github.com/jqno/gnome-happy-appy-hotkey.git
+function keyvalIsForbidden(keyval) {
+    return [
+        // Navigation keys
+        Gdk.KEY_Home,
+        Gdk.KEY_Left,
+        Gdk.KEY_Up,
+        Gdk.KEY_Right,
+        Gdk.KEY_Down,
+        Gdk.KEY_Page_Up,
+        Gdk.KEY_Page_Down,
+        Gdk.KEY_End,
+        Gdk.KEY_Tab,
+
+        // Return
+        Gdk.KEY_KP_Enter, //    65421 = 0xFF8D same as ibus/src/ibuskeysyms.h as IBUS_KEY_KP_Enter
+        Gdk.KEY_Return, //      65293 = 0xFF0D same as ibus/src/ibuskeysyms.h as IBUS_KEY_Return
+
+        Gdk.KEY_Mode_switch, // 65406 = 0xFF7E same as ibus/src/ibuskeysyms.h as IBUS_KEY_Mode_switch
+    ].includes(keyval);
+};
+
 function isBindingValid({ mask, keycode, keyval }) {
-    if ((mask === 0 || mask === Gdk.SHIFT_MASK) && keycode !== 0) {
+    if ((mask === 0 || mask === Gdk.ModifierType.SHIFT_MASK) && keycode !== 0) {
         if (
             (keyval >= Gdk.KEY_a && keyval <= Gdk.KEY_z)
             || (keyval >= Gdk.KEY_A && keyval <= Gdk.KEY_Z)
@@ -163,6 +187,7 @@ function isBindingValid({ mask, keycode, keyval }) {
             || (keyval >= Gdk.KEY_Thai_kokai && keyval <= Gdk.KEY_Thai_lekkao)
             || (keyval >= Gdk.KEY_Hangul_Kiyeog && keyval <= Gdk.KEY_Hangul_J_YeorinHieuh)
             || (keyval === Gdk.KEY_space && mask === 0)
+            || keyvalIsForbidden(keyval)
         )
         {
             return false;
@@ -171,6 +196,7 @@ function isBindingValid({ mask, keycode, keyval }) {
 
     return Gtk.accelerator_valid(keyval, mask)
         || (keyval === Gdk.KEY_Tab && mask !== 0);
+    // in addition to Gtk.accelerator_valid, Control-Tab, Alt-Tab, Super-Tab are "true"
 };
 
 function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
