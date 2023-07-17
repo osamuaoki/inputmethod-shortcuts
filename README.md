@@ -45,8 +45,8 @@ first.
 If you change installed input methods, it is good idea to restart the GNOME
 shell by log-out and log-in from GUI.
 
-(I only tested this extension for GNOME 43.  This extension should work for
-older version if version is set to be ignored.)
+(I only tested this extension for GNOME 43 on Wayland.  This extension should
+work for older version if version is set to be ignored.)
 
 ### Input Method Shortcuts (example screenshot)
 
@@ -82,10 +82,32 @@ Here are other ideas for shortcut keys.
 - `<Super>c` (**c** for Chinese)
 - `<Super>z` (**z** for Chinese=zh)
 
+Even unusual key combos of Modifierkeys can be used as shortcuts.
+
+- <Shift>Shift_R -- Press Shift_L then press Shift_R
+- <Shift>Shift_L -- Press Shift_R then press Shift_L
+- <Shift>Caps_Lock
+- <Control>Shift_R
+- <Control>Shift_L
+- <Control>Caps_Lock
+- <Alt>Shift_R
+- <Alt>Shift_L
+- <Alt>Caps_Lock
+- <Super>Shift_R
+- <Super>Shift_L
+- <Super>Caps_Lock
+...
+
+If some other program already binds a key combination for shortcut, that key
+combination can't be registered.  For example:
+
+![InputMethod Shortcuts](pref-im-alt.png)
+
 ### Ways to reorder input methods
 
 If you have multiple xkb methods, you may need to reorder input methods so the
-first xkb method may be set as the preferred one for ibus input methods.
+first xkb method may be set as the preferred one for ibus input methods via
+quick CLI.
 
 ```sh
 $ gsettings get org.gnome.desktop.input-sources sources

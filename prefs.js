@@ -150,9 +150,11 @@ function updateButton(button, shortcut_name, settings) {
     };
 };
 
-// Functions from https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/main/panels/keyboard/keyboard-shortcuts.c
-// Let's keep out from cursor and return (with or without SHIFT pressed)
-// Adopt from https://github.com/jqno/gnome-happy-appy-hotkey.git
+// Core logic from https://gitlab.gnome.org/GNOME/gnome-control-center/-/blob/main/panels/keyboard/keyboard-shortcuts.c
+// Logic with *** are added here
+// keyvals are defined in /usr/include/gtk-4.0/gdk/gdkkeysyms.h
+// modifiers are defined as enums in /usr/include/gtk-4.0/gdk/gdkenums.h
+// gjs code from https://github.com/jqno/gnome-happy-appy-hotkey.git
 function keyvalIsForbidden(keyval) {
     return [
         // Navigation keys
@@ -167,12 +169,29 @@ function keyvalIsForbidden(keyval) {
         Gdk.KEY_Tab,
 
         // Return
-        Gdk.KEY_KP_Enter, //    65421 = 0xFF8D same as ibus/src/ibuskeysyms.h as IBUS_KEY_KP_Enter
-        Gdk.KEY_Return, //      65293 = 0xFF0D same as ibus/src/ibuskeysyms.h as IBUS_KEY_Return
+        Gdk.KEY_KP_Enter,
+        Gdk.KEY_Return,
 
-        Gdk.KEY_Mode_switch, // 65406 = 0xFF7E same as ibus/src/ibuskeysyms.h as IBUS_KEY_Mode_switch
+        Gdk.KEY_Mode_switch,
     ].includes(keyval);
 };
+
+// *** Only to be used with some Modifier-pressed
+function keyvalIsAcceptedCombo(keyval) {
+    return [
+        // Modifier keys
+        Gdk.KEY_Shift_L,
+        Gdk.KEY_Control_L,
+        Gdk.KEY_Meta_L,
+        Gdk.KEY_Super_L,
+        Gdk.KEY_Shift_R,
+        Gdk.KEY_Control_R,
+        Gdk.KEY_Meta_R,
+        Gdk.KEY_Super_R,
+        Gdk.KEY_Caps_Lock, // *** This is debatable and may be skipped
+    ].includes(keyval);
+};
+// The above doesn't cause problem even if Caps_Lock is set to work as Control by GNOME Tweak
 
 function isBindingValid({ mask, keycode, keyval }) {
     if ((mask === 0 || mask === Gdk.ModifierType.SHIFT_MASK) && keycode !== 0) {
@@ -188,6 +207,7 @@ function isBindingValid({ mask, keycode, keyval }) {
             || (keyval >= Gdk.KEY_Thai_kokai && keyval <= Gdk.KEY_Thai_lekkao)
             || (keyval >= Gdk.KEY_Hangul_Kiyeog && keyval <= Gdk.KEY_Hangul_J_YeorinHieuh)
             || (keyval === Gdk.KEY_space && mask === 0)
+            || (keyval === Gdk.KEY_WakeUp && mask === 0) // *** Add for Thinkpad Fn-key
             || keyvalIsForbidden(keyval)
         )
         {
@@ -195,9 +215,17 @@ function isBindingValid({ mask, keycode, keyval }) {
         };
     };
 
-    return Gtk.accelerator_valid(keyval, mask)
-        || (keyval === Gdk.KEY_Tab && mask !== 0);
-    // in addition to Gtk.accelerator_valid, Control-Tab, Alt-Tab, Super-Tab are "true"
+    // White list (basic Gtk) -- this takes care (mask && keyvalIsForbidden(keyval) cases
+    // - Thinkpad Fn->Shift_R emitting Gdk.KEY_Launch3 is taken care here
+    if (Gtk.accelerator_valid(keyval, mask)) {
+        return true;
+    };
+    // *** Extra whitelist with some Modifier-pressed as combo
+    if ( mask && keyvalIsAcceptedCombo(keyval) ) {
+        return true;
+    };
+    // Default not allow
+    return false;
 };
 
 function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
