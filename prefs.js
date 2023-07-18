@@ -27,7 +27,7 @@ function fillPreferencesWindow(window) {
     let i0_xkb = -1; // start with invalid index to indicate no xkb set
     for (let i = 0; i < nInputMethods; i++) {
         let [type, id] = InputMethods.get_child_value(i).deepUnpack();
-        im_labels[i] = `IM${i}: <b>${id}</b> (<i>${type}</i>)`;
+        im_labels[i] = `IM${i}: ${id} (${type})`;
         if ( type === "xkb" ) {
             if (i0_xkb === -1 ) {
                 id0_xkb = id;
@@ -36,9 +36,9 @@ function fillPreferencesWindow(window) {
         };
     };
     const tp_labels = Array(MAX_TOUCHPADS);
-    tp_labels[0] = 'Touchpad <b>On</b>';
-    tp_labels[1] = 'Touchpad <b>Off</b>';
-    tp_labels[2] = 'Touchpad <b>Toggle</b>';
+    tp_labels[0] = 'Touchpad On';
+    tp_labels[1] = 'Touchpad Off';
+    tp_labels[2] = 'Touchpad Toggle';
     addShortcutPage(window, settings,
         'Input Method Shortcuts', 'input-keyboard-symbolic',
         'imkey', im_labels, MAX_INPUT_METHODS
@@ -68,7 +68,7 @@ function addShortcutPage(window, settings, title, icon_name, prefix, labels, max
     const row = Array(labels.length)
     const button = Array(labels.length)
     for (let i = 0; i < labels.length; i++) {
-        row[i] = new Adw.ActionRow({ title: `${labels[i]}`, use_markup: true });
+        row[i] = new Adw.ActionRow({ title: `${labels[i]}` });
         group.add(row[i]);
         button[i] = makeButton(`${prefix}-${i}`, settings);
         row[i].add_suffix(button[i]);
@@ -83,7 +83,7 @@ function addShortcutPage(window, settings, title, icon_name, prefix, labels, max
     page.add(group_extra);
     row_extra = new Adw.ActionRow(
         {
-            title: 'Click each row to set a new keyboard shortcut.\nPress <b>Esc</b> to cancel or <b>Backspace</b> to disable keyboard shortcut.', use_markup: true
+            title: 'Click each row to set a new keyboard shortcut.\nPress Esc to cancel or Backspace to disable keyboard shortcut.'
         }
     );
     group_extra.add(row_extra)
@@ -243,12 +243,12 @@ function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
     // Step though primary xkb before setting ibus IM : default=ON
     let title_0 = '';
     if (i0_xkb >= 0) {
-        title_0 = `Set to the first <i>xkb</i> (currently, IM${i0_xkb}: <b>${id0_xkb}</b>) before using any <i>ibus</i>.\nThis is helpful when IM can select non-latin <i>xkb</i>.`;
+        title_0 = `Set to the first xkb (currently, IM${i0_xkb}: ${id0_xkb}) before using any ibus.\nThis is helpful when IM can select non-latin xkb.`;
     } else {
-        title_0 = 'Nothing to configure (since no <i>xkb</i> are selected as IM)';
+        title_0 = 'Nothing to configure (since no xkb are selected as IM)';
     }
     const row_0 = new Adw.ActionRow({
-        title: title_0, use_markup: true
+        title: title_0
     });
     group.add(row_0);
     if (i0_xkb >= 0) {
@@ -269,7 +269,7 @@ function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
     page.add(group_extra);
     row_extra = new Adw.ActionRow(
         {
-            title: 'See <a href="https://github.com/osamuaoki/inputmethod-shortcuts">https://github.com/osamuaoki/inputmethod-shortcuts</a> for more.', use_markup: true
+            title: 'See https://github.com/osamuaoki/inputmethod-shortcuts for more.'
         }
     );
     group_extra.add(row_extra)
