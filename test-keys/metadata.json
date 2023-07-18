@@ -1,5 +1,5 @@
 {
-  "shell-version": [ "40", "41", "42", "43", "44" ],
+  "shell-version": [ "43", "44" ],
   "uuid": "test-keys@osamu.debian.org",
   "name": "Test keys",
   "description": "Test keyboard input for any keys pressed",

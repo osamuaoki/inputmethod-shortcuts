@@ -1,5 +1,5 @@
 {
-  "shell-version": [ "40", "41", "42", "43", "44" ],
+  "shell-version": [ "43", "44" ],
   "uuid": "inputmethod-shortcuts@osamu.debian.org",
   "name": "Input method and touchpad shortcuts",
   "description": "Quick switching of input method and touchpad with user configurable shortcut binding",

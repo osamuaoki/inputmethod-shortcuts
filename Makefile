@@ -23,6 +23,11 @@ install: build
 	mkdir -p $(INSTALL_PATH)
 	cp -r $(FILES) $(INSTALL_PATH)/
 
+# use_markup is not supported GNOME 40-42
+backport:
+	sed -i -E -e 's/, *use_markup *: *true//' -e 's/<\/?i>//g' -e 's/<\/?b>//g' -e 's/<a.*">//g' -e 's/<\/a>//g'  prefs.js
+	sed -i -E -e 's/^.*shell-version.*$$/  "shell-version": [ "40", "41", "42" ],/' metadata.json
+
 clean:
 	rm -f $(UUID).zip
 	rm -f schemas/gschemas.compiled

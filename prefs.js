@@ -83,8 +83,7 @@ function addShortcutPage(window, settings, title, icon_name, prefix, labels, max
     page.add(group_extra);
     row_extra = new Adw.ActionRow(
         {
-            title: 'Click each row to set a new keyboard shortcut.\nPress <b>Esc</b> to cancel or <b>Backspace</b> to disable keyboard shortcut.',
-            use_markup: true
+            title: 'Click each row to set a new keyboard shortcut.\nPress <b>Esc</b> to cancel or <b>Backspace</b> to disable keyboard shortcut.', use_markup: true
         }
     );
     group_extra.add(row_extra)
@@ -242,14 +241,15 @@ function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
     page.add(group);
 
     // Step though primary xkb before setting ibus IM : default=ON
-    const row_0 = new Adw.ActionRow({
-        use_markup: true
-    });
+    let title_0 = '';
     if (i0_xkb >= 0) {
-        row_0.set_title(`Set to the first <i>xkb</i> (currently, IM${i0_xkb}: <b>${id0_xkb}</b>) before using any <i>ibus</i>.\nThis is helpful when IM can select non-latin <i>xkb</i>.`);
+        title_0 = `Set to the first <i>xkb</i> (currently, IM${i0_xkb}: <b>${id0_xkb}</b>) before using any <i>ibus</i>.\nThis is helpful when IM can select non-latin <i>xkb</i>.`;
     } else {
-        row_0.set_title('Nothing to configure (since no <i>xkb</i> are selected as IM)');
+        title_0 = 'Nothing to configure (since no <i>xkb</i> are selected as IM)';
     }
+    const row_0 = new Adw.ActionRow({
+        title: title_0, use_markup: true
+    });
     group.add(row_0);
     if (i0_xkb >= 0) {
         let primary_xkb = new Gtk.Switch({
@@ -269,8 +269,7 @@ function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
     page.add(group_extra);
     row_extra = new Adw.ActionRow(
         {
-            title: '<a href="https://github.com/osamuaoki/inputmethod-shortcuts">See more on the upstream document</a>',
-            use_markup: true
+            title: 'See <a href="https://github.com/osamuaoki/inputmethod-shortcuts">https://github.com/osamuaoki/inputmethod-shortcuts</a> for more.', use_markup: true
         }
     );
     group_extra.add(row_extra)
