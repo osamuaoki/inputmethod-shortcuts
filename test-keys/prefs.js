@@ -186,6 +186,11 @@ function keyvalIsAcceptedCombo(keyval) {
         Gdk.KEY_Alt_R,
         Gdk.KEY_Meta_R,
         Gdk.KEY_Super_R,
+        Gdk.KEY_ISO_Level3_Shift, // Alternate Character key
+        Gdk.KEY_Multi_key, // Compose key
+        Gdk.KEY_Menu,
+        Gdk.KEY_Scroll_Lock, // *** This is debatable and may be skipped
+        Gdk.KEY_Num_Lock, // *** This is debatable and may be skipped
         Gdk.KEY_Caps_Lock, // *** This is debatable and may be skipped
     ].includes(keyval);
 };
