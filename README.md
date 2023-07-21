@@ -21,6 +21,9 @@ normal center selection panel if you don't intentionally disable pertinent
 shortcuts.  If you intentionally disable such shortcuts, these convenient
 keys can be used by this extension.
 
+Due to the difference of support for `use_markup`, I make 2 packages depending
+on target GNOME versions: one for GNOME 40-42, another for GNOME 43 and after.
+
 ## Usage
 
 First, you must set up all your input methods from GNOME GUI:
@@ -40,13 +43,9 @@ Then, enable this extension from GUI, e.g., `gnome-extensions-app`
 GNOME. You must set up each shortcut first to use this extension.
 
 The pre-exiting shortcut key can't be reused.  You must disable their usage
-first.
+first, elsewhere.
 
-If you change installed input methods, it is good idea to restart the GNOME
-shell by log-out and log-in from GUI.
-
-(I only tested this extension for GNOME 43 on Wayland.  This extension should
-work for older version if version is set to be ignored.)
+If you change installed input methods, you must restart this extension.
 
 ### Input Method Shortcuts (example screenshot)
 
@@ -84,24 +83,32 @@ Here are other ideas for shortcut keys.
 
 Even unusual key combos of Modifierkeys can be used as shortcuts.
 
-- <Shift>Shift_R -- Press Shift_L then press Shift_R
-- <Shift>Shift_L -- Press Shift_R then press Shift_L
-- <Shift>Caps_Lock
-- <Control>Shift_R
-- <Control>Shift_L
-- <Control>Caps_Lock
-- <Alt>Shift_R
-- <Alt>Shift_L
-- <Alt>Caps_Lock
-- <Super>Shift_R
-- <Super>Shift_L
-- <Super>Caps_Lock
+- `<Shift>Shift_R` -- Press `Shift_L` then press `Shift_R`
+- `<Shift>Shift_L` -- Press `Shift_R` then press `Shift_L`
+- `<Shift>Caps_Lock`
+- `<Control>Shift_R`
+- `<Control>Shift_L`
+- `<Control>Caps_Lock`
+- `<Alt>Shift_R`
+- `<Alt>Shift_L`
+- `<Alt>Caps_Lock`
+- `<Super>Shift_R`
+- `<Super>Shift_L`
+- `<Super>Caps_Lock`
 ...
 
 If some other program already binds a key combination for shortcut, that key
-combination can't be registered.  For example:
+combination can't be registered.  (Using `Alt_R` key as the 2nd key part for
+these combos of Modifierkeys is not a good idea due to many complications.)
 
-![InputMethod Shortcuts](pref-im-alt.png)
+For example, I ended up keeping original input method switching with
+`<Super>space` by using:
+
+![InputMethod Shortcuts](pref-im-alt2.png)
+
+Here, I use "US, intl., with AltGr dead keys" (`us+altgr-intl`) to enter
+accented latin characters.  This is less stressful method than "US, intl., with
+dead keys" which functions like the default Windows international environment.
 
 ### Ways to reorder input methods
 
