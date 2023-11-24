@@ -1,59 +1,57 @@
-const { Adw, Gio, Gdk, Gtk } = imports.gi;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-//const _ = ExtensionUtils.gettext;
+import Adw from 'gi://Adw';
+import Gtk from 'gi://Gtk';
+import Gdk from 'gi://Gdk';
+import Gio from 'gi://Gio';
+import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 const MAX_INPUT_METHODS = 10;
 const MAX_TOUCHPADS = 3;
 
-function init() {
-   //ExtensionUtils.initTranslations();
-};
-
-function fillPreferencesWindow(window) {
-    const settings = ExtensionUtils.getSettings();
-    const InputSources = new Gio.Settings({
-        schema_id: 'org.gnome.desktop.input-sources'
-    });
-    const InputMethods = InputSources.get_value('sources');
-    // nInputMethods : number of input method shortcuts managed (max 10)
-    const nInputMethods = (
-        (InputMethods.n_children() < MAX_INPUT_METHODS )
-            ? InputMethods.n_children()
-            : MAX_INPUT_METHODS
-    );
-    const im_labels = Array(nInputMethods);
-    let id0_xkb = ''; // start with invalid index to indicate no xkb set
-    let i0_xkb = -1; // start with invalid index to indicate no xkb set
-    for (let i = 0; i < nInputMethods; i++) {
-        let [type, id] = InputMethods.get_child_value(i).deepUnpack();
-        im_labels[i] = `IM${i}: <b>${id}</b> (<i>${type}</i>)`;
-        if ( type === "xkb" ) {
-            if (i0_xkb === -1 ) {
-                id0_xkb = id;
-                i0_xkb = i;  // the first index for xkb
+export default class Preferences extends ExtensionPreferences {
+    fillPreferencesWindow(window) {
+        const settings = this.getSettings();
+        const InputSources = new Gio.Settings({
+            schema_id: 'org.gnome.desktop.input-sources'
+        });
+        const InputMethods = InputSources.get_value('sources');
+        // nInputMethods : number of input method shortcuts managed (max 10)
+        const nInputMethods = (
+            (InputMethods.n_children() < MAX_INPUT_METHODS)
+                ? InputMethods.n_children()
+                : MAX_INPUT_METHODS
+        );
+        const im_labels = Array(nInputMethods);
+        let id0_xkb = ''; // start with invalid index to indicate no xkb set
+        let i0_xkb = -1; // start with invalid index to indicate no xkb set
+        for (let i = 0; i < nInputMethods; i++) {
+            let [type, id] = InputMethods.get_child_value(i).deepUnpack();
+            im_labels[i] = `IM${i}: <b>${id}</b> (<i>${type}</i>)`;
+            if (type === "xkb") {
+                if (i0_xkb === -1) {
+                    id0_xkb = id;
+                    i0_xkb = i;  // the first index for xkb
+                };
             };
         };
+        const tp_labels = Array(MAX_TOUCHPADS);
+        tp_labels[0] = 'Touchpad <b>On</b>';
+        tp_labels[1] = 'Touchpad <b>Off</b>';
+        tp_labels[2] = 'Touchpad <b>Toggle</b>';
+        addShortcutPage(window, settings,
+            'Input Method Shortcuts', 'input-keyboard-symbolic',
+            'imkey', im_labels, MAX_INPUT_METHODS
+        );
+        addShortcutPage(window, settings,
+            'Touchpad Shortcuts', 'input-touchpad-symbolic',
+            'tpkey', tp_labels, MAX_TOUCHPADS
+        );
+        addSwitchPage(window, settings,
+            'Operation Preference', 'preferences-system-symbolic', i0_xkb, id0_xkb
+        );
     };
-    const tp_labels = Array(MAX_TOUCHPADS);
-    tp_labels[0] = 'Touchpad <b>On</b>';
-    tp_labels[1] = 'Touchpad <b>Off</b>';
-    tp_labels[2] = 'Touchpad <b>Toggle</b>';
-    addShortcutPage(window, settings,
-        'Input Method Shortcuts', 'input-keyboard-symbolic',
-        'imkey', im_labels, MAX_INPUT_METHODS
-    );
-    addShortcutPage(window, settings,
-        'Touchpad Shortcuts', 'input-touchpad-symbolic',
-        'tpkey', tp_labels, MAX_TOUCHPADS
-    );
-    addSwitchPage(window, settings,
-        'Operation Preference', 'preferences-system-symbolic', i0_xkb, id0_xkb
-    );
-};
+}
 
 function addShortcutPage(window, settings, title, icon_name, prefix, labels, max) {
-
     // Create a preferences page
     const page = new Adw.PreferencesPage();
     page.set_title(title);
@@ -81,7 +79,7 @@ function addShortcutPage(window, settings, title, icon_name, prefix, labels, max
     // Extra text to explain
     const group_extra = new Adw.PreferencesGroup();
     page.add(group_extra);
-    row_extra = new Adw.ActionRow(
+    const row_extra = new Adw.ActionRow(
         {
             title: 'Click each row to set a new keyboard shortcut.\nPress <b>Esc</b> to cancel or <b>Backspace</b> to disable keyboard shortcut.', use_markup: true
         }
@@ -101,7 +99,7 @@ function makeButton(shortcut_name, settings) {
 
         eventController.connect('key-pressed', (_widget, keyval, keycode, state) => {
             let mask = state & Gtk.accelerator_get_default_mod_mask();
-            mask &= ~ Gdk.ModifierType.LOCK_MASK;
+            mask &= ~Gdk.ModifierType.LOCK_MASK;
             if (mask === 0 && keyval === Gdk.KEY_Escape) {
                 updateButton(button, shortcut_name, settings);
                 return Gdk.EVENT_STOP;
@@ -215,8 +213,7 @@ function isBindingValid({ mask, keycode, keyval }) {
             || (keyval === Gdk.KEY_space && mask === 0)
             || (keyval === Gdk.KEY_WakeUp && mask === 0) // *** Add for Thinkpad Fn-key
             || keyvalIsForbidden(keyval)
-        )
-        {
+        ) {
             return false;
         };
     };
@@ -227,7 +224,7 @@ function isBindingValid({ mask, keycode, keyval }) {
         return true;
     };
     // *** Extra whitelist with some Modifier-pressed as combo
-    if ( mask && keyvalIsAcceptedCombo(keyval) ) {
+    if (mask && keyvalIsAcceptedCombo(keyval)) {
         return true;
     };
     // Default not allow
@@ -272,7 +269,7 @@ function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
     // Extra text to explain
     const group_extra = new Adw.PreferencesGroup();
     page.add(group_extra);
-    row_extra = new Adw.ActionRow(
+    const row_extra = new Adw.ActionRow(
         {
             title: 'See <a href="https://github.com/osamuaoki/inputmethod-shortcuts">https://github.com/osamuaoki/inputmethod-shortcuts</a> for more.', use_markup: true
         }
@@ -281,4 +278,3 @@ function addSwitchPage(window, settings, title, icon_name, i0_xkb, id0_xkb) {
 
     window._settings = settings;
 }
-

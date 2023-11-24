@@ -1,18 +1,15 @@
-const { Meta, Shell, Gio } = imports.gi;
-const Main = imports.ui.main;
-const Keyboard = imports.ui.status.keyboard;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+import * as Keyboard from 'resource:///org/gnome/shell/ui/status/keyboard.js';
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import Gio from 'gi://Gio';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
+
 const MAX_INPUT_METHODS = 10;
 
-class Extension {
-
-    constructor() {
-        this.settings = null;
-    }
-
+export default class InputMethodSwitcher extends Extension {
     enable() {
-        this.settings = ExtensionUtils.getSettings();
+        this.settings = this.getSettings();
         const InputSources = new Gio.Settings({ schema_id: 'org.gnome.desktop.input-sources' });
         const InputMethods = InputSources.get_value('sources');
         const nInputMethods = ((InputMethods.n_children() < MAX_INPUT_METHODS) ? InputMethods.n_children() : MAX_INPUT_METHODS);
@@ -84,8 +81,3 @@ class Extension {
         this.settings = null;
     };
 };
-
-function init() {
-    return new Extension();
-};
-
