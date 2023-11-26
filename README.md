@@ -22,7 +22,12 @@ shortcuts.  If you intentionally disable such shortcuts, these convenient
 keys can be used by this extension.
 
 Due to the difference of support for `use_markup`, I make 2 packages depending
-on target GNOME versions: one for GNOME 40-42, another for GNOME 43 and after.
+on target GNOME versions: one for GNOME 40-42, another for GNOME 43 and 44.
+
+Due to the
+[major change in GNOME 45](https://blogs.gnome.org/shell-dev/2023/09/02/extensions-in-gnome-45/),
+this source code was ported to standard JavaScript modules (ESM) by Álan
+Crístoffer to support GNOME 45 and after.
 
 ## Usage
 
@@ -129,6 +134,13 @@ $ gsettings get org.gnome.desktop.input-sources sources
 The latest development version is available at:
 
   https://github.com/osamuaoki/inputmethod-shortcuts
+
+Branch:
+* `main`: support for GNOME 45 and after (version 22)
+* `backport43`: support for GNOME 43 - 44 (version 21)
+* `backport`: support for GNOME 40 - 42 (version 20)
+
+(The version is set by GNOME extension site when a zip file is uploaded.)
 
 You can install this extension for testing by:
 
