@@ -1,22 +1,11 @@
-const { Meta, Shell, Gio } = imports.gi;
-const ExtensionUtils = imports.misc.extensionUtils;
+import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 
-class Extension {
-
-    constructor() {
-        this.settings = null;
-    }
-
+export default class TestKeysExtension extends Extension {
     enable() {
-        this.settings = ExtensionUtils.getSettings();
+        this.settings = this.getSettings();
     };
 
     disable() {
         this.settings = null;
     };
 };
-
-function init() {
-    return new Extension();
-};
-

@@ -1,65 +1,64 @@
-const { Adw, Gio, Gdk, Gtk } = imports.gi;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-//const _ = ExtensionUtils.gettext;
+import Adw from 'gi://Adw';
+import Gtk from 'gi://Gtk';
+import Gdk from 'gi://Gdk';
+import Gio from 'gi://Gio';
+import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
-function init() {
-   //ExtensionUtils.initTranslations();
-};
+export default class Preferences extends ExtensionPreferences {
+    fillPreferencesWindow(window) {
+        const settings = this.getSettings();
+        // Create a preferences page
+        const page = new Adw.PreferencesPage();
+        page.set_title('Test keys');
+        page.set_icon_name('input-keyboard-symbolic');
+        window.add(page);
 
-function fillPreferencesWindow(window) {
-    const settings = ExtensionUtils.getSettings();
-    // Create a preferences page
-    const page = new Adw.PreferencesPage();
-    page.set_title('Test keys');
-    page.set_icon_name('input-keyboard-symbolic');
-    window.add(page);
+        // List of inputmethod settings as a group
+        const group = new Adw.PreferencesGroup();
+        page.add(group);
 
-    // List of inputmethod settings as a group
-    const group = new Adw.PreferencesGroup();
-    page.add(group);
+        // Create inputmethod setting rows, each with title and (right aligned) button
+        const row = new Adw.ActionRow({ title: `Test a <b>key</b>`, use_markup: true });
+        group.add(row);
+        const button = makeButton('key', settings);
+        row.add_suffix(button);
+        row.activatable_widget = button;
+        // Extra text to explain
+        const group_extra = new Adw.PreferencesGroup();
+        page.add(group_extra);
+        const row_extra = new Adw.ActionRow(
+            {
+                title: 'Click each row to set a new keyboard shortcut.\nPress <b>Esc</b> to cancel or <b>Backspace</b> to disable keyboard shortcut.\n\nkeycode = the hardware keycode. This is an identifying number for a physical key.\nkeyval = <a href="https://gjs-docs.gnome.org/gdk40~4.0-constants/">KEY CONSTANT</a> ... Like ASCII\nmask = <a href="https://gjs-docs.gnome.org/gdk30~3.0/gdk.modifiertype">GDK3 ModifierType</a>\n  SHIFT_MASK\t\t= 0x1\n  CONTROL_MASK\t= 0x4\n  MOD1_MASK\t\t= 0x8 (ALT)\n  SUPER_MASK\t\t= 0x400_0000\n  HYPER_MASK\t\t= 0x800_0000\n  META_MASK\t\t= 0x1000_0000\n  ORDED_MASKSZZ\t= 0x1c00_000d',
+                use_markup: true
+            }
+        );
+        group_extra.add(row_extra)
+        // Create a preferences page
 
-    // Create inputmethod setting rows, each with title and (right aligned) button
-    const row = new Adw.ActionRow({ title: `Test a <b>key</b>`, use_markup: true });
-    group.add(row);
-    const button = makeButton('key', settings);
-    row.add_suffix(button);
-    row.activatable_widget = button;
-    // Extra text to explain
-    const group_extra = new Adw.PreferencesGroup();
-    page.add(group_extra);
-    row_extra = new Adw.ActionRow(
-        {
-            title: 'Click each row to set a new keyboard shortcut.\nPress <b>Esc</b> to cancel or <b>Backspace</b> to disable keyboard shortcut.\n\nkeycode = the hardware keycode. This is an identifying number for a physical key.\nkeyval = <a href="https://gjs-docs.gnome.org/gdk40~4.0-constants/">KEY CONSTANT</a> ... Like ASCII\nmask = <a href="https://gjs-docs.gnome.org/gdk30~3.0/gdk.modifiertype">GDK3 ModifierType</a>\n  SHIFT_MASK\t\t= 0x1\n  CONTROL_MASK\t= 0x4\n  MOD1_MASK\t\t= 0x8 (ALT)\n  SUPER_MASK\t\t= 0x400_0000\n  HYPER_MASK\t\t= 0x800_0000\n  META_MASK\t\t= 0x1000_0000\n  ORDED_MASKSZZ\t= 0x1c00_000d',
+        // List of inputmethod settings as a group
+        const group_0 = new Adw.PreferencesGroup();
+        page.add(group_0);
+
+        // Step though primary xkb before setting ibus IM : default=ON
+        const row_0 = new Adw.ActionRow({
+            title: 'Set filter to limit <b>key</b> to valid shortcut keys',
             use_markup: true
-        }
-    );
-    group_extra.add(row_extra)
-    // Create a preferences page
+        });
+        group.add(row_0);
+        let filter_mode = new Gtk.Switch({
+            active: settings.get_boolean('filter-mode'),
+            halign: Gtk.Align.END,
+            vexpand: false,
+            hexpand: false,
+            margin_top: 18,
+            margin_bottom: 18
+        })
+        settings.bind('filter-mode', filter_mode, 'active', Gio.SettingsBindFlags.DEFAULT)
+        row_0.add_suffix(filter_mode);
+        row_0.activatable_widget = filter_mode;
 
-    // List of inputmethod settings as a group
-    const group_0 = new Adw.PreferencesGroup();
-    page.add(group_0);
-
-    // Step though primary xkb before setting ibus IM : default=ON
-    const row_0 = new Adw.ActionRow({
-        title: 'Set filter to limit <b>key</b> to valid shortcut keys',
-        use_markup: true
-    });
-    group.add(row_0);
-    let filter_mode = new Gtk.Switch({
-        active: settings.get_boolean('filter-mode'),
-        halign: Gtk.Align.END,
-        vexpand: false,
-        hexpand: false,
-        margin_top: 18,
-        margin_bottom: 18
-    })
-    settings.bind('filter-mode', filter_mode, 'active', Gio.SettingsBindFlags.DEFAULT)
-    row_0.add_suffix(filter_mode);
-    row_0.activatable_widget = filter_mode;
-
-    window._settings = settings;
+        window._settings = settings;
+    }
 }
 
 function makeButton(shortcut_name, settings) {
@@ -76,7 +75,7 @@ function makeButton(shortcut_name, settings) {
             let mask = state & Gtk.accelerator_get_default_mod_mask();
             // ignore a mask bit for Gdk.ModifierType.LOCK_MASK=2 https://gjs-docs.gnome.org/gdk30~3.0/gdk.modifiertype
             // Not found in GDK4
-            mask &= ~ Gdk.ModifierType.LOCK_MASK;
+            mask &= ~Gdk.ModifierType.LOCK_MASK;
             if (mask === 0 && keyval === Gdk.KEY_Escape) {
                 updateButton(button, shortcut_name, settings);
                 return Gdk.EVENT_STOP;
@@ -89,7 +88,7 @@ function makeButton(shortcut_name, settings) {
             }
 
             let filter_mode = settings.get_boolean('filter-mode');
-            if (isBindingValid({ mask, keycode, keyval }) || ! filter_mode) {
+            if (isBindingValid({ mask, keycode, keyval }) || !filter_mode) {
                 const binding = Gtk.accelerator_name_with_keycode(
                     null,
                     keyval,
@@ -99,7 +98,7 @@ function makeButton(shortcut_name, settings) {
                 //settings.set_strv(`${shortcut_name}`, [binding]);
                 // use [1] to retain parameter situation
                 // keyval is ASCII for normal keys in US
-                let mask_0 = (mask === 0 );
+                let mask_0 = (mask === 0);
                 let mask_s = (mask === Gdk.ModifierType.SHIFT_MASK);
                 let keycode_nz = (keycode !== 0);
                 settings.set_strv(`${shortcut_name}`, [binding, `  keyval\t=0x${keyval.toString(16)}\n  keycode\t=0x${keycode.toString(16)}\n  mask\t\t=0x${mask.toString(16)}\n  state\t\t=0x${state.toString(16)}\n  def_mask\t=0x${def_mask.toString(16)}\n  filter\t=${filter_mode}\n  mask===0 ${mask_0} / mask===SHIFT ${mask_s} / keycode !== 0 ${keycode_nz}\n *** Gdk.SHIFT_MASK=${Gdk.SHIFT_MASK} / Gdk.ModifierType.SHIFT_MASK=${Gdk.ModifierType.SHIFT_MASK}`]);
@@ -123,7 +122,7 @@ function makeButton(shortcut_name, settings) {
 function updateButton(button, shortcut_name, settings) {
     const text = settings.get_strv(shortcut_name);
     if (text[0]) {
-        if ( text.length === 1 ) {
+        if (text.length === 1) {
             button.set_label(text[0]);
         } else {
             button.set_label(`${text[0]}\n${text[1]}`);
@@ -214,8 +213,7 @@ function isBindingValid({ mask, keycode, keyval }) {
             || (keyval === Gdk.KEY_space && mask === 0)
             || (keyval === Gdk.KEY_WakeUp && mask === 0) // *** Add for Thinkpad Fn-key
             || keyvalIsForbidden(keyval)
-        )
-        {
+        ) {
             console.log(`blacklist ${mask.toString(16)} ${keyval}`);
             return false;
         };
@@ -227,7 +225,7 @@ function isBindingValid({ mask, keycode, keyval }) {
         return true;
     };
     // *** Extra whitelist with some Modifier-pressed as combo
-    if ( mask && keyvalIsAcceptedCombo(keyval) ) {
+    if (mask && keyvalIsAcceptedCombo(keyval)) {
         console.log(`whitelist-ext-combo ${mask.toString(16)} ${keyval}`);
         return true;
     };
