@@ -4,7 +4,8 @@
   "name": "Input method and touchpad shortcuts",
   "settings-schema": "org.gnome.shell.extensions.inputmethod-shortcuts",
   "shell-version": [
-    "45"
+    "45",
+    "46"
   ],
   "url": "https://github.com/osamuaoki/inputmethod-shortcuts",
   "uuid": "inputmethod-shortcuts@osamu.debian.org"
