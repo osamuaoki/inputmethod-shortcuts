@@ -5,7 +5,8 @@
   "settings-schema": "org.gnome.shell.extensions.inputmethod-shortcuts",
   "shell-version": [
     "45",
-    "46"
+    "46",
+    "47"
   ],
   "url": "https://github.com/osamuaoki/inputmethod-shortcuts",
   "uuid": "inputmethod-shortcuts@osamu.debian.org"
