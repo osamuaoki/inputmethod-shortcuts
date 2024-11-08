@@ -133,14 +133,13 @@ $ gsettings get org.gnome.desktop.input-sources sources
 
 The latest development version is available at:
 
-  https://github.com/osamuaoki/inputmethod-shortcuts
-
-Branch:
-* `main`: support for GNOME 45 and after (version 22)
-* `backport43`: support for GNOME 43 - 44 (version 21)
-* `backport`: support for GNOME 40 - 42 (version 20)
-
-(The version is set by GNOME extension site when a zip file is uploaded.)
+* [GITHUB repository](https://github.com/osamuaoki/inputmethod-shortcuts)
+    * branch `main`: support for GNOME 45 and after (version 23, 24, ...)
+    * branch `backport43`: support for GNOME 43 - 44 (version 21)
+    * branch `backport`: support for GNOME 40 - 42 (version 20)
+GNOME site:
+* [GNOME extension download](https://extensions.gnome.org/extension/6066/shortcuts-to-activate-input-methods/)
+* [GNOME extension upload](https://extensions.gnome.org/upload)
 
 You can install this extension for testing by:
 

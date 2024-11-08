@@ -1,3 +1,8 @@
+# release guide
+#     * run "make zip"
+#     * open browser: https://extensions.gnome.org/upload/
+#     * upload zip file
+
 UUID              = inputmethod-shortcuts@osamu.debian.org
 EXTENSIONS_PATH   = ~/.local/share/gnome-shell/extensions
 INSTALL_PATH      = $(EXTENSIONS_PATH)/$(UUID)
