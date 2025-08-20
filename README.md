@@ -109,6 +109,9 @@ these combos of Modifierkeys is not a good idea due to many complications.)
 For example, I ended up keeping original input method switching with
 `<Super>space` by using:
 
+Some keyboards doesn't support odd key combinations of Modification keys at the
+hardware keyboard level.  In such case, avoid using such combinations.
+
 ![InputMethod Shortcuts](pref-im-alt2.png)
 
 Here, I use "US, intl., with AltGr dead keys" (`us+altgr-intl`) to enter
@@ -141,7 +144,7 @@ GNOME site:
 * [GNOME extension download](https://extensions.gnome.org/extension/6066/shortcuts-to-activate-input-methods/)
 * [GNOME extension upload](https://extensions.gnome.org/upload)
 
-You can install this extension for testing by:
+You can install this extension for testing locally by:
 
 ```sh
 $ git clone https://github.com/osamuaoki/inputmethod-shortcuts
@@ -151,7 +154,7 @@ $ make install
 
 This will install files into your `
 ~/.local/share/gnome-shell/extensions/inputmethod-shortcuts@osamu.debian.org`
-directory.
+directory without accessing the GNOME extension web site.
 
 Afterwards, restart the GNOME shell by log-out and log-in from GUI.  You can
 also use CLI `killall gnome-shell` to log out.  This is essential process to
