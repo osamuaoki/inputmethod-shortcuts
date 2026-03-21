@@ -35,7 +35,11 @@ export default class InputMethodSwitcher extends Extension {
                         Keyboard.getInputSourceManager().inputSources[i].activate();
                     } else {
                         Keyboard.getInputSourceManager().inputSources[this.i_base].activate();
+                        // delay 300 ms between xkb setting and IM setting
+                        var delayInMilliseconds = 300; // 0.3 second
+                        setTimeout(function() {
                         Keyboard.getInputSourceManager().inputSources[i].activate();
+                        }, delayInMilliseconds);
                     };
                 }
             );
