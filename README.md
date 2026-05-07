@@ -69,6 +69,8 @@ handled by this extension.
 
 ![Touchpad Shortcuts](pref-tp.png)
 
+Note: I now use `<Super><shift>/` instead of `<Super>.` since GNOME now use `Super>.` as the shortcut to activate emoji input mode.
+
 Please note that you don't need to set all shortcut bindings.
 
 ### Operation Preference (example screenshot)
@@ -102,12 +104,13 @@ Even unusual key combos of Modifierkeys can be used as shortcuts.
 - `<Super>Caps_Lock`
 ...
 
-If some other program already binds a key combination for shortcut, that key
-combination can't be registered.  (Using `Alt_R` key as the 2nd key part for
-these combos of Modifierkeys is not a good idea due to many complications.)
+If some other program already binds a key combination for the shortcut, that
+key combination can't be registered.  (Using `Alt_R` key as the 2nd key part
+for these combos of Modifierkeys is not a good idea due to many complications.)
 
-For example, I ended up keeping original input method switching with
-`<Super>space` by using:
+For example, `<Super>space` and `<Shift><Super>space` combinations are used as
+the shortcut for the input method switching.  The `<Super>.` combination is
+used as the shortcut to activate emoji input mode.
 
 Some keyboards doesn't support odd key combinations of Modification keys at the
 hardware keyboard level.  In such case, avoid using such combinations.
