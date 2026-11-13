@@ -10,6 +10,7 @@ const MAX_INPUT_METHODS = 10;
 export default class InputMethodSwitcher extends Extension {
     enable() {
         this.settings = this.getSettings();
+        this.timerId = null;
         const InputSources = new Gio.Settings({ schema_id: 'org.gnome.desktop.input-sources' });
         const InputMethods = InputSources.get_value('sources');
         const nInputMethods = ((InputMethods.n_children() < MAX_INPUT_METHODS) ? InputMethods.n_children() : MAX_INPUT_METHODS);
@@ -37,7 +38,7 @@ export default class InputMethodSwitcher extends Extension {
                         Keyboard.getInputSourceManager().inputSources[this.i_base].activate();
                         // delay 300 ms between xkb setting and IM setting
                         var delayInMilliseconds = 300; // 0.3 second
-                        setTimeout(function() {
+                        this.timerId = setTimeout(function() {
                         Keyboard.getInputSourceManager().inputSources[i].activate();
                         }, delayInMilliseconds);
                     };
@@ -76,6 +77,10 @@ export default class InputMethodSwitcher extends Extension {
     };
 
     disable() {
+        if (this.this.timerId) {
+            clearTimeout(this.timerId);
+            this.timerId = null;
+        };
         for (let i = 0; i < MAX_INPUT_METHODS; i++) {
             Main.wm.removeKeybinding(`imkey-${i}`);
         };
