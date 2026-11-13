@@ -14,16 +14,13 @@ FILES             = README.md \
 		    schemas/
 
 .PHONY: all build zip repo install clean
-all: build
+all: zip
 
-build:
-	glib-compile-schemas --strict --targetdir=schemas/ schemas
-
-zip: build
+zip:
 	rm -f $(UUID).zip
 	zip -r $(UUID).zip $(FILES)
 
-install: build
+install: zip
 	rm -rf $(INSTALL_PATH)
 	mkdir -p $(INSTALL_PATH)
 	cp -r $(FILES) $(INSTALL_PATH)/

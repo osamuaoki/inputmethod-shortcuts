@@ -29,6 +29,8 @@ Due to the
 this source code was ported to standard JavaScript modules (ESM) by Álan
 Crístoffer to support GNOME 45 and after.
 
+No more compiled GSettings shipped for 45+ packages (EGO-P-006)
+
 ## Usage
 
 First, you must set up all your input methods from GNOME GUI:
@@ -145,7 +147,7 @@ The latest development version is available at:
     * branch `backport`: support for GNOME 40 - 42 (version 20)
 GNOME site:
 * [GNOME extension download](https://extensions.gnome.org/extension/6066/shortcuts-to-activate-input-methods/)
-* [GNOME extension upload](https://extensions.gnome.org/upload)
+* [GNOME extension upload](https://extensions.gnome.org/upload) -- This describes how to use Shexli static analyzer, too.
 
 You can install this extension for testing locally by:
 
