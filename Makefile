@@ -16,17 +16,20 @@ FILES             = README.md \
 .PHONY: all build zip repo install clean
 all: zip
 
-zip:
-	rm -f $(UUID).zip
+build:
+	glib-compile-schemas --strict --targetdir=schemas/ schemas
+
+zip: clean
+	# no more need to ship compiled GSchemas for 45+
 	zip -r $(UUID).zip $(FILES)
 
-install: zip
-	rm -rf $(INSTALL_PATH)
+install: build
+	-rm -rf $(INSTALL_PATH)
 	mkdir -p $(INSTALL_PATH)
 	cp -r $(FILES) $(INSTALL_PATH)/
 
-uninstall: build
-	rm -rf $(INSTALL_PATH)
+uninstall:
+	-rm -rf $(INSTALL_PATH)
 
 # use_markup is not supported GNOME 40-42
 backport:
