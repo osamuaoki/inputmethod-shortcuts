@@ -77,7 +77,7 @@ export default class InputMethodSwitcher extends Extension {
     };
 
     disable() {
-        if (this.this.timerId) {
+        if (this.timerId) {
             clearTimeout(this.timerId);
             this.timerId = null;
         };
